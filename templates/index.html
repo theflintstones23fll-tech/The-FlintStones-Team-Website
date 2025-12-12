@@ -1,9 +1,228 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The FlintStones Website</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='CSS.css') }}">
+<meta charset="UTF-8" />
+<title>Skor Hesaplayıcı</title>
+<style>
+ @import url('https://fonts.googleapis.com/css2?family=Besley:wght@400;600;700&display=swap');
+
+ body {
+   font-family: 'Besley', serif;
+   padding: 20px;
+   background: linear-gradient(135deg, #e9f2ff, #f8fbff);
+   margin:0;
+ }
+
+ h1 {
+   font-size:34px;
+   margin-bottom:10px;
+   font-weight:700;
+   color:#1d3557;
+   text-align:center;
+ }
+
+ * { transition: all 0.25s ease; }
+
+ /* Toplam skor barı */
+ #total-bar {
+   position: fixed;
+   top: 0; left: 0;
+   width: 100%;
+   padding: 18px 0;
+   backdrop-filter: blur(12px);
+   background: rgba(29,53,87,0.75);
+   z-index: 999;
+   display:flex; justify-content:center;
+   box-shadow:0 4px 15px rgba(0,0,0,0.25);
+ }
+
+ #total-box {
+   background: white;
+   color:#1d3557;
+   padding:15px 40px;
+   font-size:30px;
+   font-weight:700;
+   border-radius:16px;
+   border:3px solid #1d3557;
+   display:flex; align-items:center; gap:12px;
+   box-shadow:0 4px 10px rgba(0,0,0,0.25);
+ }
+
+ #total-box::before { content: '📘'; font-size:32px; }
+
+ #content-wrapper { margin-top: 130px; }
+
+ /* Görev kartları */
+ .mission {
+   position: relative;
+   background: rgba(255,255,255,0.72);
+   backdrop-filter: blur(10px);
+   padding: 20px 20px 25px;
+   margin: 24px 0;
+   border-radius: 18px;
+   border-left: 7px solid #457b9d;
+   box-shadow:0 6px 18px rgba(0,0,0,0.12);
+ }
+
+ .mission:hover {
+   transform: translateY(-5px);
+   box-shadow:0 12px 24px rgba(0,0,0,0.18);
+ }
+
+ /* Premium görev başlıkları */
+ h2 {
+   background: linear-gradient(90deg, #1d3557, #457b9d);
+   color: #fff;
+   padding: 14px;
+   border-radius: 10px;
+   font-size:22px;
+   font-weight:600;
+   display:flex;
+   align-items:center;
+   gap:14px;
+   margin-top:0;
+   box-shadow: inset 0 0 12px rgba(0,0,0,0.18);
+ }
+
+ label {
+   display: block; margin: 10px 0 6px;
+   font-weight:600; font-size:17px; color:#1d3557;
+ }
+
+ select {
+   padding: 12px 16px; min-width: 180px;
+   border-radius:10px;
+   border:2px solid #457b9d;
+   background:white;
+   font-weight:600;
+   color:#1d3557;
+   font-size:16px; cursor:pointer;
+   appearance:none;
+   background-image:url('data:image/svg+xml;utf8,<svg fill="%23457b9d" height="26" viewBox="0 0 24 24" width="26" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+   background-repeat:no-repeat;
+   background-position:right 10px center;
+   background-size:24px;
+ }
+ select:hover { background:#e8f4ff; border-color:#1d3557; transform:scale(1.03); }
+ select:active { transform:scale(0.98); }
+
+ /* Mini skor kutusu */
+ .mini-score {
+   position: absolute;
+   top: 14px;
+   right: 14px;
+   background: white;
+   padding: 8px 14px;
+   border-radius: 12px;
+   border: 2px solid #1d3557;
+   font-size: 16px;
+   font-weight: 700;
+   color:#1d3557;
+   box-shadow:0 4px 10px rgba(0,0,0,0.18);
+ }
+
+ .mini-score::before {
+   content: "⭐";
+   margin-right:6px;
+ }
+
+</style>
 </head>
-<body><h1>Try Our AI Model</h1></body>
+<body>
+
+<h1>Skor Hesaplayıcı</h1>
+
+<div id="missions"></div>
+
+<div id="total-bar">
+ <div id="total-box">Toplam Skor: 0</div>
+</div>
+
+<script>
+const missions = [
+ { id:"EI", title:"EKİPMAN İNCELEME", fields:[{label:"Robot ve ekipman uygun", type:"yesno", points:{Evet:20, Hayır:0}}] },
+ { id:"m01", title:"YÜZEY FIRÇALAMA", fields:[{label:"Toprak birikintileri", type:"num", max:2, points:[0,10,20]},{label:"Arkeoloğun fırçası dokunmuyor", type:"yesno", points:{Evet:10, Hayır:0}}] },
+ { id:"m02", title:"HARİTANIN GÖRÜLMESİ", fields:[{label:"Temizlik", type:"num", max:3, points:[0,10,20,30]}] },
+ { id:"m03", title:"MADEN KUYUSU KAŞIFI", fields:[{label:"Kendi maden arabası", type:"yesno", points:{Evet:30, Hayır:0}}, {label:"Bonus", type:"yesno", points:{Evet:10, Hayır:0}}] },
+ { id:"m04", title:"DİKKATLİ KURTARMA", fields:[{label:"Değerli eşya", type:"yesno", points:{Evet:30, Hayır:0}}, {label:"Destek yapıları", type:"yesno", points:{Evet:10, Hayır:0}}] },
+ { id:"m05", title:"BURADA KİM YAŞADI?", fields:[{label:"Yapı zemini dik", type:"yesno", points:{Evet:30, Hayır:0}}] },
+ { id:"m06", title:"TAV OCAĞI", fields:[{label:"Cevher blokları", type:"num", max:3, points:[0,10,20,30]}] },
+ { id:"m07", title:"AĞIR KALDIRMA", fields:[{label:"Değirmen taşı", type:"yesno", points:{Evet:30, Hayır:0}}] },
+ { id:"m08", title:"SİLO", fields:[{label:"Silo parçaları", type:"num", max:3, points:[0,10,20,30]}] },
+ { id:"m09", title:"NELER SATILIYOR?", fields:[{label:"Çatı", type:"yesno", points:{Evet:20, Hayır:0}}, {label:"Pazar malları", type:"yesno", points:{Evet:10, Hayır:0}}] },
+ { id:"m10", title:"TERAZİYE BAS", fields:[{label:"Terazi bozuldu", type:"yesno", points:{Evet:20, Hayır:0}}, {label:"Kefe çıktı", type:"yesno", points:{Evet:10, Hayır:0}}] },
+ { id:"m11", title:"BALIKÇI EŞYALARI", fields:[{label:"Eşyalar kaldırıldı", type:"yesno", points:{Evet:20, Hayır:0}}, {label:"Bonus", type:"yesno", points:{Evet:10, Hayır:0}}] },
+ { id:"m12", title:"KURTARMA OPERASYONU", fields:[{label:"Kum temizlendi", type:"yesno", points:{Evet:20, Hayır:0}}, {label:"Gemi kaldırıldı", type:"yesno", points:{Evet:10, Hayır:0}}] },
+ { id:"m13", title:"HEYKEL YENİDEN İNŞASI", fields:[{label:"Heykel kaldırıldı", type:"yesno", points:{Evet:30, Hayır:0}}] },
+ { id:"m14", title:"MEYDAN", fields:[{label:"Eşyalar", type:"num", max:7, points:[0,5,10,15,20,25,30,35]}] },
+ { id:"m15", title:"SAHA İŞARETİ", fields:[{label:"Bayraklı sahalar", type:"num", max:3, points:[0,10,20,30]}] },
+ { id:"PT", title:"HASSASİYET", fields:[{label:"Belirteç sayısı", type:"num", max:6, points:[0,10,15,25,35,50,50]}] },
+ { id:"GP", title:"Duyarlı Profesyonellik", fields:[{label:"Seviye", type:"select", options:["GELİŞİYOR 2","USTACA 3","ÖRNEK OLACAK 4"], points:{"GELİŞİYOR 2":0, "USTACA 3":0, "ÖRNEK OLACAK 4":0}}] }
+];
+
+function render() {
+ const container = document.getElementById("missions");
+ container.innerHTML = "";
+
+ missions.forEach(m => {
+   const div = document.createElement("div");
+   div.className = "mission";
+   div.setAttribute("data-mid", m.id);
+
+   div.innerHTML = `
+     <h2>${m.id} - ${m.title}</h2>
+     <div class="mini-score">0</div>
+   `;
+
+   m.fields.forEach((f,i)=>{
+     let html = `<label>${f.label}</label>`;
+     if(f.type === "yesno") html += `<select data-mid="${m.id}" data-f="${i}"><option>Hayır</option><option>Evet</option></select>`;
+     if(f.type === "num"){
+       html += `<select data-mid="${m.id}" data-f="${i}">`;
+       for(let n=0;n<=f.max;n++) html+=`<option>${n}</option>`;
+       html += `</select>`;
+     }
+     if(f.type === "select"){
+       html += `<select data-mid="${m.id}" data-f="${i}">`;
+       f.options.forEach(o=> html+=`<option>${o}</option>`);
+       html += `</select>`;
+     }
+     div.innerHTML += html;
+   });
+
+   container.appendChild(div);
+ });
+
+ document.querySelectorAll("select").forEach(s=> s.addEventListener("change", calc));
+}
+
+function calc(){
+ let total = 0;
+
+ missions.forEach(m=>{
+   let miniScore = 0;
+
+   m.fields.forEach((f,i)=>{
+     const el = document.querySelector(`select[data-mid='${m.id}'][data-f='${i}']`);
+     if(!el) return;
+     const val = el.value;
+
+     if(f.type === "yesno") miniScore += f.points[val] || 0;
+     if(f.type === "num") miniScore += f.points[parseInt(val)] || 0;
+     if(f.type === "select") miniScore += f.points[val] || 0;
+   });
+
+   total += miniScore;
+
+   const miniBox = document.querySelector(`.mission[data-mid="${m.id}"] .mini-score`);
+   if(miniBox) miniBox.innerText = miniScore;
+ });
+
+ document.getElementById("total-box").innerText = "Toplam Skor: " + total;
+}
+
+render();
+</script>
+
+</body>
+</html>
