@@ -3354,3 +3354,147 @@ input, select, textarea {
 	transform: translateY(-3px);
 	box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
 }
+
+/*Score*/
+#score-section {
+	--parchment: #f4ece1;
+	--ink: #4a3728;
+	--clay: #a67c52;
+	--gold: #d4af37;
+	--moss: #6b8e23;
+
+	font-family: 'Georgia', serif;
+	background: #e5d3b3;
+	color: var(--ink);
+	margin: 0;
+	overflow: hidden;
+	display: flex;
+	height: 100vh;
+}
+
+#score-section .main-container {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	transition: all 0.5s ease;
+}
+
+#score-section .map-section {
+	flex: 1;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	transition: all 0.5s ease;
+}
+
+#score-section #map-wrapper {
+	position: relative;
+	width: 900px;
+	height: 506px;
+	background: url("../images/Mat.png") no-repeat center / cover;
+	border: 8px solid var(--ink);
+	box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+	transition: transform 0.5s ease;
+}
+
+#score-section .marker {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	background: var(--clay);
+	color: white;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
+	cursor: pointer;
+	border: 2px solid white;
+	transition: 0.3s;
+	z-index: 10;
+}
+
+#score-section .marker:hover {
+	background: var(--moss);
+	transform: scale(1.3);
+}
+
+#score-section .side-panel {
+	width: 0;
+	background: var(--parchment);
+	border-left: 0 solid var(--clay);
+	overflow-y: auto;
+	transition: all 0.5s ease;
+	padding: 0;
+}
+
+#score-section .side-panel.open {
+	width: 450px;
+	padding: 30px;
+	border-left: 6px solid var(--clay);
+}
+
+#score-section .map-shrunk #map-wrapper {
+	transform: scale(0.8);
+}
+
+#score-section .map-shrunk h1 {
+	font-size: 1.5rem;
+}
+
+#score-section #score-panel {
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	background: var(--ink);
+	color: var(--parchment);
+	padding: 10px 20px;
+	border-radius: 5px;
+	font-size: 20px;
+	border: 2px solid var(--gold);
+	z-index: 100;
+}
+
+#score-section .mission-box {
+	border-bottom: 1px solid var(--clay);
+	padding: 15px 0;
+}
+
+#score-section .point-tag {
+	color: var(--moss);
+	font-weight: bold;
+	float: right;
+}
+
+#score-section select,
+#score-section input {
+	width: 100%;
+	padding: 8px;
+	margin-top: 5px;
+	border: 1px solid var(--clay);
+	background: white;
+}
+
+#score-section .close-btn {
+	background: var(--clay);
+	color: white;
+	border: none;
+	padding: 12px;
+	width: 100%;
+	cursor: pointer;
+	margin-top: 15px;
+	font-weight: bold;
+}
+#score-section h1 {
+	color: #000000;
+	font-family: "Raleway", Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: 800;
+	letter-spacing: 0.25em;
+	line-height: 1.65;
+	margin: 0 0 3em 0;
+	text-transform: uppercase;
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Score Calculation Sheet</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static', path='css/main.css') }}">
+	</head>
+
+<body>
+	<header id="header">
+		<h1><a href="index.html"></a>The FlintStones</h1>
+		<nav class="links">
+			<ul>
+				<li><a href="#team">Our Team</a></li>
+				<li><a href="#project">Our Project</a></li>
+				<li><a href="#">FLL Chatbot</a></li>
+				<li><a href="#">Score Calculator</a></li>
+				<li><a href="#">FLL Simulation</a></li>
+			</ul>
+		</nav>
+		<a href="#home" class="logo">
+		<img src="{{ url_for('static', path='logo.jpg') }}"alt="Logo"style="width: 60px; height: 60px;"></a>  
+		<a href="#menu" class="logo">	
+		<img src="{{ url_for('static', path='images/Menu.png') }}"alt="Menu"style="width: 60px; height: 60px;" href="#menu"></a>
+	</header>
+<!-- Header -->
+	<section id = "score-section">
+		<div class="main-container" id="container">
+			<div class="map-section">
+				<h1>FLL Unearthed Score Calculation Sheet</h1>
+				<div id="map-wrapper">
+					<div class="marker" style="top: 36%; left: 4%;" onclick="openP('M01')">01</div>
+					<div class="marker" style="top: 8%; left: 8%;" onclick="openP('M02')">02</div>
+					<div class="marker" style="top: 4%; left: 32%;" onclick="openP('M03')">03</div>
+					<div class="marker" style="top: 23%; left: 26%;" onclick="openP('M04')">04</div>
+					<div class="marker" style="top: 8%; left: 76%;" onclick="openP('M05')">05</div>
+					<div class="marker" style="top: 26%; left: 79%;" onclick="openP('M06')">06</div>
+					<div class="marker" style="top: 10%; left: 91%;" onclick="openP('M07')">07</div>
+					<div class="marker" style="top: 45%; left: 89%;" onclick="openP('M08')">08</div>
+					<div class="marker" style="top: 45%; left: 69%;" onclick="openP('M09')">09</div>
+					<div class="marker" style="top: 53%; left: 56%;" onclick="openP('M10')">10</div>
+					<div class="marker" style="top: 90%; left: 63%;" onclick="openP('M11')">11</div>
+					<div class="marker" style="top: 93%; left: 46%;" onclick="openP('M12')">12</div>
+					<div class="marker" style="top: 41%; left: 46%;" onclick="openP('M13')">13</div>
+					<div class="marker" style="top: 46%; left: 34%;" onclick="openP('M14')">14</div>
+					<div class="marker" style="top: 8%; left: 92%;" onclick="openP('M15')">15</div>
+				</div>
+				
+				<div style="margin-top:20px; display:flex; gap:15px; background:rgba(255,255,255,0.4); padding:10px; border-radius:10px;">
+					<div>Denetim (+20): <select id="inspect" onchange="calc()"><option value="20">Evet</option><option value="0">Hayır</option></select></div>
+					<div>Hassasiyet Diskleri: <select id="precision" onchange="calc()">
+						<option value="50">6 Disk (50 Puan)</option><option value="50">5 Disk (50 Puan)</option>
+						<option value="35">4 Disk (35 Puan)</option><option value="25">3 Disk (25 Puan)</option>
+						<option value="15">2 Disk (15 Puan)</option><option value="10">1 Disk (10 Puan)</option><option value="0">0 Disk (0 Puan)</option>
+					</select></div>
+				</div>
+			</div>
+
+			<div class="side-panel" id="side-panel">
+				<div id="panel-content"></div>
+				<button class="close-btn" onclick="closeP()">Save</button>
+			</div>
+		</div>
+
+		<div id="score-panel">Total: <span id="total">70</span> Points</div>
+		</section>
+	<script>
+		const state = { m1p:0,m1b:0,m2:0,m3c:0,m3b:0,m4a:0,m4s:0,m5:0,m6:0,m7:0,m8:0,m9r:0,m9i:0,m10t:0,m10k:0,m11e:0,m11b:0,m12k:0,m12g:0,m13:0,m14:0,m15:0 };
+
+		const missions = {
+			M01: { t: "Görev 01: Yüzey Fırçalama", h: `<div class="mission-box">Temizlenen toprak birikintisi: <span class="point-tag">10/adet</span><select onchange="u('m1p',this.value)"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></div><div class="mission-box">Fırça kazı alanına değmiyor: <span class="point-tag">10 Puan</span><select onchange="u('m1b',this.value)"><option value="0">Hayır</option><option value="10">Evet</option></select></div>` },
+			M02: { t: "Görev 02: Harita Reveal", h: `<div class="mission-box">Temizlenen üst toprak bölümleri: <span class="point-tag">10/adet</span><select onchange="u('m2',this.value)"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>` },
+			M03: { t: "Görev 03: Maden Ocağı Kaşifi", h: `<div class="mission-box">Maden arabası rakip alanda: <span class="point-tag">30 Puan</span><select onchange="u('m3c',this.value)"><option value="0">Hayır</option><option value="30">Evet</option></select></div><div class="mission-box">Bonus: Rakip araba sizde: <span class="point-tag">10 Puan</span><select onchange="u('m3b',this.value)"><option value="0">Hayır</option><option value="10">Evet</option></select></div>` },
+			M04: { t: "Görev 04: Dikkatli Kurtarma", h: `<div class="mission-box">Eser madene değmiyor: <span class="point-tag">30 Puan</span><select onchange="u('m4a',this.value)"><option value="0">Hayır</option><option value="30">Evet</option></select></div><div class="mission-box">Destekler ayakta: <span class="point-tag">10 Puan</span><select onchange="u('m4s',this.value)"><option value="0">Hayır</option><option value="10">Evet</option></select></div>` },
+			M05: { t: "Görev 05: Burada Kim Yaşadı?", h: `<div class="mission-box">Taban tamamen yukarı dönük: <span class="point-tag">30 Puan</span><select onchange="u('m5',this.value)"><option value="0">Hayır</option><option value="30">Evet</option></select></div>` },
+			M06: { t: "Görev 06: Demirhane", h: `<div class="mission-box">Bloklar demirhaneye değmiyor: <span class="point-tag">10/adet</span><select onchange="u('m6',this.value)"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>` },
+			M07: { t: "Görev 07: Ağırlık Kaldırma", h: `<div class="mission-box">Değirmen taşı tabana değmiyor: <span class="point-tag">30 Puan</span><select onchange="u('m7',this.value)"><option value="0">Hayır</option><option value="30">Evet</option></select></div>` },
+			M08: { t: "Görev 08: Ambar", h: `<div class="mission-box">Yiyecekler ambar dışında: <span class="point-tag">10/adet</span><select onchange="u('m8',this.value)"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>` },
+			M09: { t: "Görev 09: Ne Satılıyor?", h: `<div class="mission-box">Çatı tamamen kaldırılmış: <span class="point-tag">20 Puan</span><select onchange="u('m9r',this.value)"><option value="0">Hayır</option><option value="20">Evet</option></select></div><div class="mission-box">Ürünler kaldırılmış: <span class="point-tag">10 Puan</span><select onchange="u('m9i',this.value)"><option value="0">Hayır</option><option value="10">Evet</option></select></div>` },
+			M10: { t: "Görev 10: Teraziyi Eğ", h: `<div class="mission-box">Terazi eğilmiş ve mata değiyor: <span class="point-tag">20 Puan</span><select onchange="u('m10t',this.value)"><option value="0">Hayır</option><option value="20">Evet</option></select></div><div class="mission-box">Kefe tamamen çıkarılmış: <span class="point-tag">10 Puan</span><select onchange="u('m10k',this.value)"><option value="0">Hayır</option><option value="10">Evet</option></select></div>` },
+			M11: { t: "Görev 11: Balıkçı Eserleri", h: `<div class="mission-box">Eserler seviye üzerinde: <span class="point-tag">20 Puan</span><select onchange="u('m11e',this.value)"><option value="0">Hayır</option><option value="20">Evet</option></select></div><div class="mission-box">Bonus: Bayrak aşağıda: <span class="point-tag">10 Puan</span><select onchange="u('m11b',this.value)"><option value="0">Hayır</option><option value="10">Evet</option></select></div>` },
+			M12: { t: "Görev 12: Kurtarma Operasyonu", h: `<div class="mission-box">Kum tamamen temizlenmiş: <span class="point-tag">20 Puan</span><select onchange="u('m12k',this.value)"><option value="0">Hayır</option><option value="20">Evet</option></select></div><div class="mission-box">Gemi tamamen kaldırılmış: <span class="point-tag">10 Puan</span><select onchange="u('m12g',this.value)"><option value="0">Hayır</option><option value="10">Evet</option></select></div>` },
+			M13: { t: "Görev 13: Heykel Yeniden İnşa", h: `<div class="mission-box">Heykel tamamen kaldırılmış: <span class="point-tag">30 Puan</span><select onchange="u('m13',this.value)"><option value="0">Hayır</option><option value="30">Evet</option></select></div>` },
+			M14: { t: "Görev 14: Forum", h: `<div class="mission-box">Forumdaki eser sayısı (max 7): <span class="point-tag">5/adet</span><input type="number" min="0" max="7" onchange="u('m14',this.value)"></div>` },
+			M15: { t: "Görev 15: Alan İşaretleme", h: `<div class="mission-box">İşaretli alan (bayrak) sayısı: <span class="point-tag">10/adet</span><select onchange="u('m15',this.value)"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>` }
+		};
+
+		function openP(id) {
+			document.getElementById("panel-content").innerHTML = `<h2>${missions[id].t}</h2>${missions[id].h}`;
+			document.getElementById("side-panel").classList.add("open");
+			document.getElementById("container").classList.add("map-shrunk");
+		}
+		function closeP() { document.getElementById("side-panel").classList.remove("open"); document.getElementById("container").classList.remove("map-shrunk"); calc(); }
+		function u(k, v) { state[k] = parseInt(v) || 0; calc(); }
+
+		function calc() {
+			let t = (state.m1p*10)+state.m1b+(state.m2*10)+state.m3c+state.m3b+state.m4a+state.m4s+state.m5+(state.m6*10)+state.m7+(state.m8*10)+state.m9r+state.m9i+state.m10t+state.m10k+state.m11e+state.m11b+state.m12k+state.m12g+state.m13+(state.m14*5)+(state.m15*10);
+			t += parseInt(document.getElementById("inspect").value) + parseInt(document.getElementById("precision").value);
+			document.getElementById("total").innerText = t;
+		}
+	</script>
+</body>
+</html>
