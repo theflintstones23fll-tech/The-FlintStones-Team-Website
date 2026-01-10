@@ -9,7 +9,7 @@
 		<title>The FlintStones Website</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="{{ url_for('static', path='css/main.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', path='css/main2.css') }}">
 	</head>
 	<body class="is-preload">
 
@@ -29,14 +29,9 @@
 							</ul>
 						</nav>
 						<a href="#home" class="logo">
-						<img src="{{ url_for('static', path='logo.jpg') }}"alt="Logo"style="width: 60px; height: 60px;"></a>
-						<nav class="main">
-							<ul>
-								<li class="menu">
-									<a class="fa-bars" href="#menu">Menu</a>
-								</li>
-							</ul> 
-						</nav> 
+						<img src="{{ url_for('static', path='logo.jpg') }}"alt="Logo"style="width: 60px; height: 60px;"></a>  
+						<a href="#menu" class="logo">	
+							<img src="{{ url_for('static', path='images/Menu.png') }}"alt="Menu"style="width: 60px; height: 60px;" href="#menu"></a>
 					</header>
 
 				<!-- Menu -->
@@ -88,17 +83,17 @@
 
 				<!-- Main -->
 					<div id="main">
-						<!-- About -->
+						<!-- Team -->
 						<section id = "team" class="team">
 							<h2 class="text-blk team-head-text">
 								Our Team
 							</h2>
-							<p>Team Description</p>
+							<p>Adipiscing a commodo ante nunc accumsan et interdum mi ante adipiscing. A nunc lobortis non nisl amet vis sed volutpat aclacus nascetur ac non. Lorem curae et ante amet sapien sed tempus adipiscing id accumsan.</p>
 							<div class="responsive-container-block container">
 								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
 									<div class="card">
 									<div class="team-image-wrapper">
-										<img class="team-member-image" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET7.15.png">
+										<img class="team-member-image" src="{{ url_for('static', path='images/Ali.png') }}">
 									</div>
 									<p class="text-blk name">
 										Ali Aslan İşkol
@@ -114,7 +109,7 @@
 								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
 									<div class="card">
 									<div class="team-image-wrapper">
-										<img class="team-member-image" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET7.15.png">
+										<img class="team-member-image" src="{{ url_for('static', path='images/Asil.png') }}">
 									</div>
 									<p class="text-blk name">
 										Asil Kahraman
@@ -130,7 +125,7 @@
 								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
 									<div class="card">
 									<div class="team-image-wrapper">
-										<img class="team-member-image" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET7.15.png">
+										<img class="team-member-image" src="{{ url_for('static', path='images/Batuhan.png') }}">
 									</div>
 									<p class="text-blk name">
 										Batuhan Pekcan
@@ -146,7 +141,7 @@
 								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
 									<div class="card">
 									<div class="team-image-wrapper">
-										<img class="team-member-image" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET7.15.png">
+										<img class="team-member-image" src="{{ url_for('static', path='images/DenizDerya.png') }}">
 									</div>
 									<p class="text-blk name">
 										Deniz Derya Gökçek
@@ -162,7 +157,7 @@
 								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
 									<div class="card">
 									<div class="team-image-wrapper">
-										<img class="team-member-image" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET7.15.png">
+										<img class="team-member-image" src="{{ url_for('static', path='images/DenizTurker.png') }}">
 									</div>
 									<p class="text-blk name">
 										Deniz Türker
@@ -178,7 +173,7 @@
 								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
 									<div class="card">
 									<div class="team-image-wrapper">
-										<img class="team-member-image" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET7.15.png">
+										<img class="team-member-image" src="{{ url_for('static', path='images/EylulDoga.png') }}">
 									</div>
 									<p class="text-blk name">
 										Eylül Doğa Soytekin
@@ -194,7 +189,7 @@
 								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
 									<div class="card">
 									<div class="team-image-wrapper">
-										<img class="team-member-image" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET7.15.png">
+										<img class="team-member-image" src="{{ url_for('static', path='images/Eylul.png') }}">
 									</div>
 									<p class="text-blk name">
 										Eylül Karabulak
@@ -210,7 +205,7 @@
 								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
 									<div class="card">
 										<div class="team-image-wrapper">
-											<img class="team-member-image" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET7.15.png">
+											<img class="team-member-image" src="{{ url_for('static', path='images/Okyanus.png') }}">
 										</div>
 										<p class="text-blk name">
 											Okyanus Bora Şevik
@@ -226,7 +221,7 @@
 								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
 									<div class="card">
 									<div class="team-image-wrapper">
-										<img class="team-member-image" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET7.15.png">
+										<img class="team-member-image" src="{{ url_for('static', path='images/Ozan.png') }}">
 									</div>
 									<p class="text-blk name">
 										Ozan Özçelik
@@ -242,7 +237,7 @@
 								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
 									<div class="card">
 										<div class="team-image-wrapper">
-											<img class="team-member-image" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET7.15.png">
+											<img class="team-member-image" src="{{ url_for('static', path='images/Ozgu.png') }}">
 										</div>
 										<p class="text-blk name">
 											Özgü Soylu
@@ -257,24 +252,36 @@
 								</div>
 							</div>
 						</section>
-						<section id = "project"class="project">
+
+						<!-- Project -->
+						<section id="project" class="project">
 							<h2>Our Project</h2>
+
 							<div class="container_project">
 								<div class="row gtr-150">
-									<div class="col-6 col-12">
-										<header class="major">
-											<h3>FLL-AI</h3s>
+									<div class="col-6 col-12-medium">
+										<header class="mains">
+											<h3>The Flint-AI</h3>
 										</header>
-										<p>Adipiscing a commodo ante nunc accumsan et interdum mi ante adipiscing. A nunc lobortis non nisl amet vis sed volutpat aclacus nascetur ac non. Lorem curae et ante amet sapien sed tempus adipiscing id accumsan.</p>
+										<p>
+											Adipiscing a commodo ante nunc accumsan et interdum mi ante adipiscing.
+											A nunc lobortis non nisl amet vis sed volutpat aclacus nascetur ac non.
+											Lorem curae et ante amet sapien sed tempus adipiscing id accumsan.</p>
+										<a class="try_btn" style="cursor: pointer;" href = "#menu">
+										Try Our AI Model Now
+										</a>
 									</div>
-									<div class="col-6 col-12-medium imp-medium">
-										<span class="image fit"><img src="images/pic01.jpg" alt="" /></span>
+
+									<div class="col-6 col-12-medium">
+										<span class="image fit">
+											<img src="static/images/Plate.png" alt="Flint-AI Project Image" />
+										</span>
 									</div>
+
 								</div>
 							</div>
 						</section>
-					</div>
-
+						
 		<!-- Scripts -->
 			<script src="{{ url_for('static', path='js/jquery.min.js')}}"></script>
 			<script src="{{ url_for('static', path='js/browser.min.js')}}"></script>
