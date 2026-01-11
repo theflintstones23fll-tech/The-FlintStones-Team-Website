@@ -3482,12 +3482,19 @@ input, select, textarea {
 	background: var(--clay);
 	color: white;
 	border: none;
-	padding: 12px;
 	width: 100%;
 	cursor: pointer;
 	margin-top: 15px;
 	font-weight: bold;
+
+	display: flex;
+	align-items: center;      
+	justify-content: center;  
+
+	padding: 8px 12px;      
+	font-size: 10px;
 }
+
 #score-section h1 {
 	color: #000000;
 	font-family: "Raleway", Helvetica, sans-serif;

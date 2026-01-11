@@ -9,7 +9,7 @@
 		<title>Score Calculation Sheet</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="{{ url_for('static', path='css/main.css') }}">
+		<link rel="stylesheet" href="../static/css/main.css">
 	</head>
 
 <body>
@@ -17,11 +17,11 @@
 		<h1><a href="index.html"></a>The FlintStones</h1>
 		<nav class="links">
 			<ul>
-				<li><a href="#team">Our Team</a></li>
-				<li><a href="#project">Our Project</a></li>
-				<li><a href="#">FLL Chatbot</a></li>
-				<li><a href="#">Score Calculator</a></li>
-				<li><a href="#">FLL Simulation</a></li>
+				<li><a href="/#team">Our Team</a></li>
+				<li><a href="/#project">Our Project</a></li>
+				<li><a href="/#">FLL Chatbot</a></li>
+				<li><a href="/score">Score Calculator</a></li>
+				<li><a href="/#">FLL Simulation</a></li>
 			</ul>
 		</nav>
 		<a href="#home" class="logo">
@@ -38,18 +38,18 @@
 					<div class="marker" style="top: 36%; left: 4%;" onclick="openP('M01')">01</div>
 					<div class="marker" style="top: 8%; left: 8%;" onclick="openP('M02')">02</div>
 					<div class="marker" style="top: 4%; left: 32%;" onclick="openP('M03')">03</div>
-					<div class="marker" style="top: 23%; left: 26%;" onclick="openP('M04')">04</div>
-					<div class="marker" style="top: 8%; left: 76%;" onclick="openP('M05')">05</div>
-					<div class="marker" style="top: 26%; left: 79%;" onclick="openP('M06')">06</div>
-					<div class="marker" style="top: 10%; left: 91%;" onclick="openP('M07')">07</div>
-					<div class="marker" style="top: 45%; left: 89%;" onclick="openP('M08')">08</div>
-					<div class="marker" style="top: 45%; left: 69%;" onclick="openP('M09')">09</div>
-					<div class="marker" style="top: 53%; left: 56%;" onclick="openP('M10')">10</div>
-					<div class="marker" style="top: 90%; left: 63%;" onclick="openP('M11')">11</div>
-					<div class="marker" style="top: 93%; left: 46%;" onclick="openP('M12')">12</div>
-					<div class="marker" style="top: 41%; left: 46%;" onclick="openP('M13')">13</div>
-					<div class="marker" style="top: 46%; left: 34%;" onclick="openP('M14')">14</div>
-					<div class="marker" style="top: 8%; left: 92%;" onclick="openP('M15')">15</div>
+					<div class="marker" style="top: 15%; left: 27%;" onclick="openP('M04')">04</div>
+					<div class="marker" style="top: 5%; left: 78%;" onclick="openP('M05')">05</div>
+					<div class="marker" style="top: 17%; left: 85%;" onclick="openP('M06')">06</div>
+					<div class="marker" style="top: 5%; left: 92%;" onclick="openP('M07')">07</div>
+					<div class="marker" style="top: 37%; left:92%;" onclick="openP('M08')">08</div>
+					<div class="marker" style="top: 40%; left: 68%;" onclick="openP('M09')">09</div>
+					<div class="marker" style="top: 45%; left: 59%;" onclick="openP('M10')">10</div>
+					<div class="marker" style="top: 91%; left: 58%;" onclick="openP('M11')">11</div>
+					<div class="marker" style="top: 91%; left: 44%;" onclick="openP('M12')">12</div>
+					<div class="marker" style="top: 39%; left: 41%;" onclick="openP('M13')">13</div>
+					<div class="marker" style="top: 43%; left: 32%;" onclick="openP('M14')">14</div>
+					<div class="marker" style="top: 90%; left: 90%;" onclick="openP('M15')">15</div>
 				</div>
 				
 				<div style="margin-top:20px; display:flex; gap:15px; background:rgba(255,255,255,0.4); padding:10px; border-radius:10px;">
@@ -69,7 +69,7 @@
 		</div>
 
 		<div id="score-panel">Total: <span id="total">70</span> Points</div>
-		</section>
+	</section>
 	<script>
 		const state = { m1p:0,m1b:0,m2:0,m3c:0,m3b:0,m4a:0,m4s:0,m5:0,m6:0,m7:0,m8:0,m9r:0,m9i:0,m10t:0,m10k:0,m11e:0,m11b:0,m12k:0,m12g:0,m13:0,m14:0,m15:0 };
 
