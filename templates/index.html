@@ -1,293 +1,507 @@
 <!DOCTYPE HTML>
-<!--
-	Future Imperfect by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
-	<head>
-		<title>The FlintStones Website</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="../static/css/main.css">
-	</head>
-	<body class="is-preload">
+<head>
+    <title>The FlintStones Website</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-		<!-- Wrapper -->
-			<div id="wrapper"> 
+        body {
+            font-family: "Source Sans Pro", Arial, sans-serif;
+            background: #f4f4f4;
+            color: #000;
+            line-height: 1.6;
+            padding-top: 70px;
+        }
 
-				<!-- Header -->
-					<header id="header">
-						<h1><a href="index.html"></a>The FlintStones</h1>
-						<nav class="links">
-							<ul>
-								<li><a href="##team">Our Team</a></li>
-								<li><a href="#project">Our Project</a></li>
-								<li><a href="#">FLL Chatbot</a></li>
-								<li><a href="/score">Score Calculator</a></li>
-								<li><a href="#">FLL Simulation</a></li>
-							</ul>
-						</nav>
-						<a href="#home" class="logo">
-						<img src="{{ url_for('static', path='logo.jpg') }}"alt="Logo"style="width: 60px; height: 60px;"></a>  
-						<a href="#menu" class="logo">	
-							<img src="{{ url_for('static', path='images/Menu.png') }}"alt="Menu"style="width: 60px; height: 60px;" href="#menu"></a>
-					</header>
+        /* Header Styles */
+        #header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #bb6401;
+            border-bottom: 2px solid rgba(160, 160, 160, 0.3);
+            z-index: 1000;
+            padding: 0 20px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-				<!-- Menu -->
-					<section id="menu">
-						<!-- Links -->
-							<section>
-								<ul class="links">
-									<li>
-										<a href="#team">
-											<h3>Our Team</h3>
-											<p>Feugiat tempus veroeros dolor</p>
-										</a>
-									</li>
-									<li>
-										<a href="#project">
-											<h3>Our Project</h3>
-											<p>Sed vitae justo condimentum</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<h3>FLL Chatbot</h3>
-											<p>Phasellus sed ultricies mi congue</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<h3>Score Calculator</h3>
-											<p>Porta lectus amet ultricies</p>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<h3>FLL Simulation</h3>
-											<p>Porta lectus amet ultricies</p>
-										</a>
-									</li>
-								</ul>
-							</section>
+        #header h1 {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
 
-						<!-- Actions -->
-							<section>
-								<ul class="actions stacked">
-									<li><a href="#" class="button large fit">Contact Us</a></li>
-								</ul>
-							</section>
+        #header h1 a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-					</section>
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
 
-				<!-- Main -->
-					<div id="main">
-						<!-- Team -->
-						<section id = "team" class="team">
-							<h2 class="text-blk team-head-text">
-								Our Team
-							</h2>
-							<p>Adipiscing a commodo ante nunc accumsan et interdum mi ante adipiscing. A nunc lobortis non nisl amet vis sed volutpat aclacus nascetur ac non. Lorem curae et ante amet sapien sed tempus adipiscing id accumsan.</p>
-							<div class="responsive-container-block container">
-								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-									<div class="card">
-									<div class="team-image-wrapper">
-										<img class="team-member-image" src="{{ url_for('static', path='images/Ali.png') }}">
-									</div>
-									<p class="text-blk name">
-										Ali Aslan İşkol
-									</p>
-									<p class="text-blk position">
-										CEO
-									</p>
-									<p class="text-blk feature-text">
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									</p>
-									</div>
-								</div>
-								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-									<div class="card">
-									<div class="team-image-wrapper">
-										<img class="team-member-image" src="{{ url_for('static', path='images/Asil.png') }}">
-									</div>
-									<p class="text-blk name">
-										Asil Kahraman
-									</p>
-									<p class="text-blk position">
-										CEO
-									</p>
-									<p class="text-blk feature-text">
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									</p>
-									</div>
-								</div>
-								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-									<div class="card">
-									<div class="team-image-wrapper">
-										<img class="team-member-image" src="{{ url_for('static', path='images/Batuhan.png') }}">
-									</div>
-									<p class="text-blk name">
-										Batuhan Pekcan
-									</p>
-									<p class="text-blk position">
-										CEO
-									</p>
-									<p class="text-blk feature-text">
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									</p>
-									</div>
-								</div>
-								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-									<div class="card">
-									<div class="team-image-wrapper">
-										<img class="team-member-image" src="{{ url_for('static', path='images/DenizDerya.png') }}">
-									</div>
-									<p class="text-blk name">
-										Deniz Derya Gökçek
-									</p>
-									<p class="text-blk position">
-										CEO
-									</p>
-									<p class="text-blk feature-text">
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									</p>
-									</div>
-								</div>
-								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-									<div class="card">
-									<div class="team-image-wrapper">
-										<img class="team-member-image" src="{{ url_for('static', path='images/DenizTurker.png') }}">
-									</div>
-									<p class="text-blk name">
-										Deniz Türker
-									</p>
-									<p class="text-blk position">
-										CEO
-									</p>
-									<p class="text-blk feature-text">
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									</p>
-									</div>
-								</div>
-								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-									<div class="card">
-									<div class="team-image-wrapper">
-										<img class="team-member-image" src="{{ url_for('static', path='images/EylulDoga.png') }}">
-									</div>
-									<p class="text-blk name">
-										Eylül Doğa Soytekin
-									</p>
-									<p class="text-blk position">
-										CEO
-									</p>
-									<p class="text-blk feature-text">
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									</p>
-									</div>
-								</div>
-								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-									<div class="card">
-									<div class="team-image-wrapper">
-										<img class="team-member-image" src="{{ url_for('static', path='images/Eylul.png') }}">
-									</div>
-									<p class="text-blk name">
-										Eylül Karabulak
-									</p>
-									<p class="text-blk position">
-										CEO
-									</p>
-									<p class="text-blk feature-text">
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									</p>
-									</div>
-								</div>
-								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-									<div class="card">
-										<div class="team-image-wrapper">
-											<img class="team-member-image" src="{{ url_for('static', path='images/Okyanus.png') }}">
-										</div>
-										<p class="text-blk name">
-											Okyanus Bora Şevik
-										</p>
-										<p class="text-blk position">
-											CEO
-										</p>
-										<p class="text-blk feature-text">
-											Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-										</p>
-									</div>
-								</div>
-								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-									<div class="card">
-									<div class="team-image-wrapper">
-										<img class="team-member-image" src="{{ url_for('static', path='images/Ozan.png') }}">
-									</div>
-									<p class="text-blk name">
-										Ozan Özçelik
-									</p>
-									<p class="text-blk position">
-										CEO
-									</p>
-									<p class="text-blk feature-text">
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									</p>
-									</div>
-								</div>
-								<div class="responsive-cell-block wk-desk-3 wk-ipadp-3 wk-tab-6 wk-mobile-12 card-container">
-									<div class="card">
-										<div class="team-image-wrapper">
-											<img class="team-member-image" src="{{ url_for('static', path='images/Ozgu.png') }}">
-										</div>
-										<p class="text-blk name">
-											Özgü Soylu
-										</p>
-										<p class="text-blk position">
-											CEO
-										</p>
-										<p class="text-blk feature-text">
-											Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-										</p>
-									</div>
-								</div>
-							</div>
-						</section>
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: color 0.3s;
+        }
 
-						<!-- Project -->
-						<section id="project" class="project">
-							<h2>Our Project</h2>
+        .nav-links a:hover {
+            color: #ffe4b5;
+        }
 
-							<div class="container_project">
-								<div class="row gtr-150">
-									<div class="col-6 col-12-medium">
-										<header class="mains">
-											<h3>The Flint-AI</h3>
-										</header>
-										<p>
-											Adipiscing a commodo ante nunc accumsan et interdum mi ante adipiscing.
-											A nunc lobortis non nisl amet vis sed volutpat aclacus nascetur ac non.
-											Lorem curae et ante amet sapien sed tempus adipiscing id accumsan.</p>
-										<a class="try_btn" style="cursor: pointer;" href = "#menu">
-										Try Our AI Model Now
-										</a>
-									</div>
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
 
-									<div class="col-6 col-12-medium">
-										<span class="image fit">
-											<img src="static/images/Plate.png" alt="Flint-AI Project Image" />
-										</span>
-									</div>
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
 
-								</div>
-							</div>
-						</section>
-						
-		<!-- Scripts -->
-			<script src="{{ url_for('static', path='js/jquery.min.js')}}"></script>
-			<script src="{{ url_for('static', path='js/browser.min.js')}}"></script>
-			<script src="{{ url_for('static', path='js/breakpoints.min.js')}}"></script>
-			<script src="{{ url_for('static', path='js/util.js')}}"></script>
-			<script src="{{ url_for('static', path='js/main.js')}}"></script>
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background: #bb6401;
+            padding: 20px;
+            z-index: 999;
+        }
 
-	</body>
-</html>
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+        }
+
+        .mobile-menu li {
+            margin: 15px 0;
+        }
+
+        .mobile-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: block;
+        }
+
+        /* Main Content */
+        #main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Team Section */
+        .team {
+            margin-bottom: 60px;
+        }
+
+        .team h2 {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 20px;
+        }
+
+        .team > p {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-size: 1rem;
+        }
+
+        .team-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .team-image-wrapper {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .team-member-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .name {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .position {
+            color: #bb6401;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .feature-text {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Project Section */
+        .project {
+            margin-bottom: 60px;
+        }
+
+        .project h2 {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 40px;
+        }
+
+        .project-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .project-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .project-text h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .project-text p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .try_btn {
+            background: #e74c3c;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .try_btn:hover {
+            background: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+        }
+
+        .project-image {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+
+            #header {
+                height: 70px;
+                padding: 0 15px;
+            }
+
+            #header h1 {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .team h2, .project h2 {
+                font-size: 1.5rem;
+            }
+
+            .team-container {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+            }
+
+            .project-content {
+                flex-direction: column;
+            }
+
+            .project-text, .project-image {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #header h1 {
+                font-size: 1rem;
+            }
+
+            .team-container {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 20px 15px;
+            }
+
+            .try_btn {
+                padding: 12px 30px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <h1><a href="#home">The FlintStones</a></h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#team">Our Team</a></li>
+                <li><a href="#project">Our Project</a></li>
+                <li><a href="#chatbot">FLL Chatbot</a></li>
+                <li><a href="/score">Score Calculator</a></li>
+                <li><a href="#simulation">FLL Simulation</a></li>
+            </ul>
+        </nav>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+    </header>
+
+    <!-- Mobile Menu -->
+    <nav class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="#team">Our Team</a></li>
+            <li><a href="#project">Our Project</a></li>
+            <li><a href="#chatbot">FLL Chatbot</a></li>
+            <li><a href="/score">Score Calculator</a></li>
+            <li><a href="#simulation">FLL Simulation</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="main">
+        <!-- Team Section -->
+        <section id="team" class="team">
+            <h2>Our Team</h2>
+            <p>We are The FlintStones, a dedicated FLL team working together to solve challenges through innovation, creativity, and teamwork. Meet our talented team members who bring unique skills and passion to every project.</p>
+            
+            <div class="team-container">
+                <div class="card">
+                    <div class="team-image-wrapper">
+                        <img class="team-member-image" src="../static/images/Ali.png" alt="Ali Aslan İşkol">
+                    </div>
+                    <p class="name">Ali Aslan İşkol</p>
+                    <p class="position">Team Member</p>
+                    <p class="feature-text">Passionate about robotics and programming, bringing innovative solutions to our team.</p>
+                </div>
+
+                <div class="card">
+                    <div class="team-image-wrapper">
+                        <img class="team-member-image" src="../static/images/Asil.png" alt="Asil Kahraman">
+                    </div>
+                    <p class="name">Asil Kahraman</p>
+                    <p class="position">Team Member</p>
+                    <p class="feature-text">Dedicated to excellence in design and engineering with creative problem-solving skills.</p>
+                </div>
+
+                <div class="card">
+                    <div class="team-image-wrapper">
+                        <img class="team-member-image" src="../static/images/Batuhan.png" alt="Batuhan Pekcan">
+                    </div>
+                    <p class="name">Batuhan Pekcan</p>
+                    <p class="position">Team Member</p>
+                    <p class="feature-text">Expert in mechanical design and construction with attention to detail.</p>
+                </div>
+
+                <div class="card">
+                    <div class="team-image-wrapper">
+                        <img class="team-member-image" src="../static/images/DenizDerya.png" alt="Deniz Derya Gökçek">
+                    </div>
+                    <p class="name">Deniz Derya Gökçek</p>
+                    <p class="position">Team Member</p>
+                    <p class="feature-text">Skilled in research and project management, keeping our team organized.</p>
+                </div>
+
+                <div class="card">
+                    <div class="team-image-wrapper">
+                        <img class="team-member-image" src="../static/images/DenizTurker.png" alt="Deniz Türker">
+                    </div>
+                    <p class="name">Deniz Türker</p>
+                    <p class="position">Team Member</p>
+                    <p class="feature-text">Talented in coding and algorithm development for robot automation.</p>
+                </div>
+
+                <div class="card">
+                    <div class="team-image-wrapper">
+                        <img class="team-member-image" src="../static/images/EylulDoga.png" alt="Eylül Doğa Soytekin">
+                    </div>
+                    <p class="name">Eylül Doğa Soytekin</p>
+                    <p class="position">Team Member</p>
+                    <p class="feature-text">Creative thinker with strong communication and presentation skills.</p>
+                </div>
+
+                <div class="card">
+                    <div class="team-image-wrapper">
+                        <img class="team-member-image" src="../static/images/Eylul.png" alt="Eylül Karabulak">
+                    </div>
+                    <p class="name">Eylül Karabulak</p>
+                    <p class="position">Team Member</p>
+                    <p class="feature-text">Enthusiastic about STEM education and community outreach initiatives.</p>
+                </div>
+
+                <div class="card">
+                    <div class="team-image-wrapper">
+                        <img class="team-member-image" src="../static/images/Okyanus.png">
+                    </div>
+                    <p class="name">Okyanus Bora Şevik</p>
+                    <p class="position">Team Member</p>
+                    <p class="feature-text">Analytical thinker with expertise in strategy and competition planning.</p>
+                </div>
+
+                <div class="card">
+                    <div class="team-image-wrapper">
+                        <img class="team-member-image" src="../static/images/Ozan.png" alt="Ozan Özçelik">
+                    </div>
+                    <p class="name">Ozan Özçelik</p>
+                    <p class="position">Team Member</p>
+                    <p class="feature-text">Innovative problem solver with a passion for technology and teamwork.</p>
+                </div>
+
+                <div class="card">
+                    <div class="team-image-wrapper">
+                        <img class="team-member-image" src="../static/images/Ozgu.png" alt="Özgü Soylu">
+                    </div>
+                    <p class="name">Özgü Soylu</p>
+                    <p class="position">Team Member</p>
+                    <p class="feature-text">Detail-oriented team player with strong technical and collaborative skills.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Section -->
+        <section id="project" class="project">
+            <h2>Our Project</h2>
+            <div class="project-content">
+                <div class="project-text">
+                    <h3>The Flint-AI</h3>
+                    <p>Our innovative AI-powered solution for FLL challenges combines cutting-edge technology with creative problem-solving. The Flint-AI helps teams analyze, strategize, and optimize their robot performance for competition success.</p>
+                    <a class="try_btn" href="#chatbot">Try Our AI Model Now</a>
+                </div>
+                <div class="project-image">
+                    <img src="../static/images/Plate.png" alt="Flint-AI Project">
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            menuToggle.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
+        });
+
+        // Close mobile menu when clicking a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                menuToggle.textContent = '☰';
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
