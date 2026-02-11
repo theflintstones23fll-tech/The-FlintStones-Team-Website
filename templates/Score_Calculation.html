@@ -414,6 +414,13 @@
                         <option value="0">0 Tokens (0 Points)</option>
                     </select>
                 </div>
+                <div class="control-group">
+                    <button class="excel-btn" onclick="exportToExcel()" style="background: #4a3728; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">📊 Save as Excel</button>
+                </div>
+                <div class="control-group">
+                    <input type="file" id="excelFile" accept=".xlsx,.xls" style="display: none;" onchange="importFromExcel(this)">
+                    <button class="excel-btn" onclick="document.getElementById('excelFile').click()" style="background: #6b8e23; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">📂 Load Excel</button>
+                </div>
             </div>
 
             <!-- Map with Markers -->
@@ -681,12 +688,16 @@
     <!-- Score Panel -->
     <div id="score-panel">Total: <span id="total">70</span> Points</div>
 
+    <script src="../static/js/xlsx.full.min.js"></script>
     <script>
         const state = { 
             m1p:0, m1b:0, m2:0, m3c:0, m3b:0, m4a:0, m4s:0, m5:0, 
             m6:0, m7:0, m8:0, m9r:0, m9i:0, m10t:0, m10k:0, m11e:0, 
             m11b:0, m12k:0, m12g:0, m13:0, m14:0, m15:0 
         };
+        
+        // History tracking system
+        let calculationHistory = [];
 
         function u(k, v) { 
             state[k] = parseInt(v) || 0; 
@@ -730,6 +741,342 @@
                 menuToggle.textContent = '☰';
             });
         });
+
+        // Add current calculation to history
+        function addToHistory() {
+            const now = new Date();
+            const totalScore = document.getElementById("total").innerText;
+            
+            const currentCalculation = {
+                timestamp: now.toLocaleString(),
+                score: totalScore,
+                state: {...state},
+                inspect: document.getElementById("inspect").value,
+                precision: document.getElementById("precision").value
+            };
+            
+            calculationHistory.push(currentCalculation);
+        }
+        
+        // Excel Export Function
+        function exportToExcel() {
+            const wb = XLSX.utils.book_new();
+            
+            // Add current calculation to history before exporting
+            addToHistory();
+            
+            // Get current date and time
+            const now = new Date();
+            const totalScore = document.getElementById("total").innerText;
+            
+            // Create summary sheet with all calculations
+            const summaryData = [
+                ["FLL Unearthed Score Calculator - History"],
+                ["Export Date:", now.toLocaleString()],
+                ["Total Calculations:", calculationHistory.length],
+                [],
+                ["Date & Time", "Total Score", "Equipment Inspection", "Precision Tokens"]
+            ];
+            
+            // Add all historical calculations
+            calculationHistory.forEach(calc => {
+                summaryData.push([
+                    calc.timestamp,
+                    calc.score,
+                    calc.inspect === "20" ? "Yes" : "No",
+                    document.querySelector("#precision option[value='" + calc.precision + "']").text.split(' ')[0]
+                ]);
+            });
+            
+            const summaryWs = XLSX.utils.aoa_to_sheet(summaryData);
+            summaryWs['!cols'] = [
+                {wch: 20}, // Date & Time
+                {wch: 12}, // Total Score
+                {wch: 18}, // Equipment Inspection
+                {wch: 15}  // Precision Tokens
+            ];
+            XLSX.utils.book_append_sheet(wb, summaryWs, "Calculation History");
+            
+            // Create detailed sheet for current calculation
+            const missionData = [
+                ["Current Calculation Details"],
+                ["Date & Time:", now.toLocaleString()],
+                ["Total Score:", totalScore],
+                [],
+                ["Mission", "Status", "Points"],
+                ["Equipment Inspection", document.getElementById("inspect").value === "20" ? "Yes" : "No", document.getElementById("inspect").value],
+                ["Precision Tokens", document.getElementById("precision").options[document.getElementById("precision").selectedIndex].text, document.getElementById("precision").value],
+                ["M01: Surface Excavation", `Cleared: ${state.m1p}, Brush: ${state.m1b > 0 ? "Yes" : "No"}`, (state.m1p * 10) + state.m1b],
+                ["M02: Map Reveal", `Sections: ${state.m2}`, state.m2 * 10],
+                ["M03: Mine Cart Explorer", `Cart: ${state.m3c > 0 ? "Yes" : "No"}, Bonus: ${state.m3b > 0 ? "Yes" : "No"}`, state.m3c + state.m3b],
+                ["M04: Careful Rescue", `Artifact: ${state.m4a > 0 ? "Yes" : "No"}, Supports: ${state.m4s > 0 ? "Yes" : "No"}`, state.m4a + state.m4s],
+                ["M05: Who Lived Here?", state.m5 > 0 ? "Foundation Complete" : "Not Complete", state.m5],
+                ["M06: Smelter", `Blocks: ${state.m6}`, state.m6 * 10],
+                ["M07: Weight Lifting", state.m7 > 0 ? "Millstone Moved" : "Not Moved", state.m7],
+                ["M08: Storage", `Items: ${state.m8}`, state.m8 * 10],
+                ["M09: What's For Sale?", `Roof: ${state.m9r > 0 ? "Yes" : "No"}, Products: ${state.m9i > 0 ? "Yes" : "No"}`, state.m9r + state.m9i],
+                ["M10: Tip the Scale", `Scale: ${state.m10t > 0 ? "Yes" : "No"}, Pan: ${state.m10k > 0 ? "Yes" : "No"}`, state.m10t + state.m10k],
+                ["M11: Fishing Artifacts", `Artifacts: ${state.m11e > 0 ? "Yes" : "No"}, Flag: ${state.m11b > 0 ? "Yes" : "No"}`, state.m11e + state.m11b],
+                ["M12: Rescue Operation", `Sand: ${state.m12k > 0 ? "Yes" : "No"}, Ship: ${state.m12g > 0 ? "Yes" : "No"}`, state.m12k + state.m12g],
+                ["M13: Statue Rebuild", state.m13 > 0 ? "Statue Raised" : "Not Raised", state.m13],
+                ["M14: Forum", `Artifacts: ${state.m14}`, state.m14 * 5],
+                ["M15: Area Marking", `Areas: ${state.m15}`, state.m15 * 10],
+                [],
+                ["Raw Data"],
+                ["State Variable", "Value"],
+                ["m1p", state.m1p],
+                ["m1b", state.m1b],
+                ["m2", state.m2],
+                ["m3c", state.m3c],
+                ["m3b", state.m3b],
+                ["m4a", state.m4a],
+                ["m4s", state.m4s],
+                ["m5", state.m5],
+                ["m6", state.m6],
+                ["m7", state.m7],
+                ["m8", state.m8],
+                ["m9r", state.m9r],
+                ["m9i", state.m9i],
+                ["m10t", state.m10t],
+                ["m10k", state.m10k],
+                ["m11e", state.m11e],
+                ["m11b", state.m11b],
+                ["m12k", state.m12k],
+                ["m12g", state.m12g],
+                ["m13", state.m13],
+                ["m14", state.m14],
+                ["m15", state.m15],
+                ["inspect", document.getElementById("inspect").value],
+                ["precision", document.getElementById("precision").value]
+            ];
+            
+            const missionWs = XLSX.utils.aoa_to_sheet(missionData);
+            missionWs['!cols'] = [
+                {wch: 25}, // Mission
+                {wch: 30}, // Status
+                {wch: 10}  // Points
+            ];
+            XLSX.utils.book_append_sheet(wb, missionWs, "Current Calculation");
+            
+            // Generate filename with timestamp
+            const fileName = `FLL_Score_History_${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}-${String(now.getMinutes()).padStart(2,'0')}.xlsx`;
+            
+            XLSX.writeFile(wb, fileName);
+        }
+        
+        // Excel Import Function
+        function importFromExcel(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const wb = XLSX.read(data, {type: 'array'});
+                    
+                    // Add current state to history before loading new data
+                    addToHistory();
+                    
+                    // Try to load from "Calculation History" sheet first (new format)
+                    if (wb.SheetNames.includes("Calculation History")) {
+                        loadFromHistoryFormat(wb);
+                    } 
+                    // Fallback to old format
+                    else if (wb.SheetNames.includes("FLL Score") || wb.SheetNames.includes("Current Calculation")) {
+                        loadFromOldFormat(wb);
+                    }
+                    
+                    // Update all form controls to match state
+                    updateFormControls();
+                    
+                    // Recalculate total
+                    calc();
+                    
+                    const calcCount = calculationHistory.length;
+                    alert(`Score data loaded successfully! Total calculations in history: ${calcCount}`);
+                } catch (error) {
+                    alert('Error loading Excel file: ' + error.message);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+            input.value = ''; // Reset file input
+        }
+        
+        // Load from new history format
+        function loadFromHistoryFormat(wb) {
+            const historyWs = wb.Sheets["Calculation History"];
+            const historyData = XLSX.utils.sheet_to_json(historyWs, {header: 1});
+            
+            // Find the start of calculation data
+            let dataStartRow = -1;
+            for (let i = 0; i < historyData.length; i++) {
+                if (historyData[i][0] === "Date & Time" && historyData[i][1] === "Total Score") {
+                    dataStartRow = i + 1;
+                    break;
+                }
+            }
+            
+            if (dataStartRow > 0) {
+                // Load historical calculations
+                for (let i = dataStartRow; i < historyData.length && historyData[i][0]; i++) {
+                    const row = historyData[i];
+                    const historicalCalc = {
+                        timestamp: row[0] || "",
+                        score: row[1] || "0",
+                        state: {...state}, // Use current state as template
+                        inspect: row[2] === "Yes" ? "20" : "0",
+                        precision: "50" // Default value
+                    };
+                    
+                    // Try to match precision tokens from text
+                    if (row[3]) {
+                        const precisionMatch = row[3].match(/(\d+)\s+Tokens/);
+                        if (precisionMatch) {
+                            const tokens = parseInt(precisionMatch[1]);
+                            if (tokens === 6 || tokens === 5) historicalCalc.precision = "50";
+                            else if (tokens === 4) historicalCalc.precision = "35";
+                            else if (tokens === 3) historicalCalc.precision = "25";
+                            else if (tokens === 2) historicalCalc.precision = "15";
+                            else if (tokens === 1) historicalCalc.precision = "10";
+                            else historicalCalc.precision = "0";
+                        }
+                    }
+                    
+                    calculationHistory.push(historicalCalc);
+                }
+            }
+            
+            // Load current calculation from "Current Calculation" sheet
+            if (wb.SheetNames.includes("Current Calculation")) {
+                loadCurrentCalculation(wb.Sheets["Current Calculation"]);
+            }
+        }
+        
+        // Load from old format
+        function loadFromOldFormat(wb) {
+            const sheetName = wb.SheetNames.includes("Current Calculation") ? "Current Calculation" : 
+                            wb.SheetNames.includes("FLL Score") ? "FLL Score" : wb.SheetNames[0];
+            const ws = wb.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(ws, {header: 1});
+            
+            let totalScore = "0";
+            let timestamp = new Date().toLocaleString();
+            let inspectValue = "0";
+            let precisionValue = "50";
+            
+            // Parse data
+            for (let i = 0; i < jsonData.length; i++) {
+                const row = jsonData[i];
+                if (!row[0]) continue;
+                
+                const firstCol = row[0].toString();
+                
+                if (firstCol === "Total Score:") {
+                    totalScore = row[1] ? row[1].toString() : "0";
+                } else if (firstCol === "Date & Time:") {
+                    timestamp = row[1] ? row[1].toString() : new Date().toLocaleString();
+                } else if (firstCol === "Equipment Inspection") {
+                    inspectValue = row[2] && row[2] !== "0" ? "20" : "0";
+                } else if (firstCol === "Precision Tokens") {
+                    precisionValue = row[2] ? row[2].toString() : "50";
+                } else if (firstCol === "Raw Data") {
+                    // Parse raw data
+                    for (let j = i + 2; j < jsonData.length && jsonData[j][0]; j++) {
+                        const dataRow = jsonData[j];
+                        const key = dataRow[0] ? dataRow[0].toString() : "";
+                        const value = parseInt(dataRow[1]) || 0;
+                        
+                        if (state.hasOwnProperty(key)) {
+                            state[key] = value;
+                        }
+                    }
+                    break;
+                }
+            }
+            
+            // Create historical entry
+            const historicalCalc = {
+                timestamp: timestamp,
+                score: totalScore,
+                state: {...state},
+                inspect: inspectValue,
+                precision: precisionValue
+            };
+            
+            calculationHistory.push(historicalCalc);
+            
+            // Set current form values
+            document.getElementById("inspect").value = inspectValue;
+            document.getElementById("precision").value = precisionValue;
+        }
+        
+        // Load current calculation from detailed sheet
+        function loadCurrentCalculation(ws) {
+            const jsonData = XLSX.utils.sheet_to_json(ws, {header: 1});
+            
+            for (let i = 0; i < jsonData.length; i++) {
+                const row = jsonData[i];
+                if (!row[0]) continue;
+                
+                const firstCol = row[0].toString();
+                
+                if (firstCol === "Equipment Inspection") {
+                    document.getElementById("inspect").value = row[2] && row[2] !== "0" ? "20" : "0";
+                } else if (firstCol === "Precision Tokens") {
+                    // Extract numeric value from the text
+                    const precisionText = row[1] ? row[1].toString() : "";
+                    if (precisionText.includes("50")) document.getElementById("precision").value = "50";
+                    else if (precisionText.includes("35")) document.getElementById("precision").value = "35";
+                    else if (precisionText.includes("25")) document.getElementById("precision").value = "25";
+                    else if (precisionText.includes("15")) document.getElementById("precision").value = "15";
+                    else if (precisionText.includes("10")) document.getElementById("precision").value = "10";
+                    else document.getElementById("precision").value = "0";
+                } else if (firstCol === "Raw Data") {
+                    // Parse raw data section
+                    for (let j = i + 2; j < jsonData.length && jsonData[j][0]; j++) {
+                        const dataRow = jsonData[j];
+                        const key = dataRow[0] ? dataRow[0].toString() : "";
+                        const value = parseInt(dataRow[1]) || 0;
+                        
+                        if (state.hasOwnProperty(key)) {
+                            state[key] = value;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        
+        // Update form controls to match state
+        function updateFormControls() {
+            // Update all select and input elements
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => {
+                if (select.id && state[select.id] !== undefined) {
+                    select.value = state[select.id].toString();
+                }
+            });
+            
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                if (input.id && state[input.id] !== undefined) {
+                    input.value = state[input.id].toString();
+                }
+            });
+            
+            // Update mission-specific selects
+            const missionSelects = document.querySelectorAll('.mission-card select');
+            missionSelects.forEach(select => {
+                const onchange = select.getAttribute('onchange');
+                if (onchange && onchange.includes("u('")) {
+                    const match = onchange.match(/u\('([^']+)'/);
+                    if (match && state[match[1]] !== undefined) {
+                        select.value = state[match[1]].toString();
+                    }
+                }
+            });
+        }
 
         // Initialize calculation
         calc();
