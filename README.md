@@ -34,13 +34,6 @@ pip install -r requirements.txt
 python main.py
 ```
 
-Visit: http://localhost:5000
-
-## Default Login
-
-- **Username:** `admin`
-- **Password:** `flintstones2024`
-
 ## Features
 
 - 🏠 **Homepage** — Hero with geological strata layers, FLL info, innovation project, team
