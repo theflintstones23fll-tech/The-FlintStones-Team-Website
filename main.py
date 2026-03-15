@@ -203,4 +203,4 @@ def sponsor_dashboard():
     return render_template('sponsor_dashboard.html', user=user)
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=5000)
