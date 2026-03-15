@@ -1,0 +1,339 @@
+{% extends "base.html" %}
+{% block title %}Score Calculator — The Flintstones{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/score.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="score-page">
+
+    <!-- Page Header -->
+    <div class="score-header">
+        <div class="score-header-inner">
+            <h1>⛏ FLL Unearthed Score Calculator</h1>
+            <p>Logged in as <strong>{{ user }}</strong></p>
+        </div>
+    </div>
+
+    <div class="score-layout">
+
+        <!-- LEFT: Controls + Missions -->
+        <div class="score-main">
+
+            <!-- Controls Bar -->
+            <div class="controls-bar">
+                <div class="ctrl-group">
+                    <label>Equipment Inspection</label>
+                    <select id="inspect" onchange="calc()">
+                        <option value="20">✅ Passed (+20 pts)</option>
+                        <option value="0">❌ Failed (0 pts)</option>
+                    </select>
+                </div>
+                <div class="ctrl-group">
+                    <label>Precision Tokens</label>
+                    <select id="precision" onchange="calc()">
+                        <option value="50">6 Tokens — 50 pts</option>
+                        <option value="50">5 Tokens — 50 pts</option>
+                        <option value="35">4 Tokens — 35 pts</option>
+                        <option value="25">3 Tokens — 25 pts</option>
+                        <option value="15">2 Tokens — 15 pts</option>
+                        <option value="10">1 Token — 10 pts</option>
+                        <option value="0">0 Tokens — 0 pts</option>
+                    </select>
+                </div>
+                <div class="ctrl-group ctrl-actions">
+                    <button class="btn-ctrl btn-save" onclick="openSaveModal()">💾 Save Score</button>
+                    <button class="btn-ctrl btn-export" onclick="exportToExcel()">📊 Export Excel</button>
+                    <button class="btn-ctrl btn-reset" onclick="resetAll()">↺ Reset</button>
+                </div>
+            </div>
+
+            <!-- Field Map -->
+            <div class="mat-wrapper">
+                <div class="mat-label">🗺 Field Map — click a mission number to jump to it</div>
+                <img class="mat-image" src="{{ url_for('static', filename='images/Mat.png') }}" alt="FLL Unearthed Mat">
+                <div class="mat-markers">
+                    <div class="mat-marker" style="top:36%;left:4%"   onclick="scrollToMission('M01')" title="M01: Surface Excavation">01</div>
+                    <div class="mat-marker" style="top:8%;left:8%"    onclick="scrollToMission('M02')" title="M02: Map Reveal">02</div>
+                    <div class="mat-marker" style="top:4%;left:32%"   onclick="scrollToMission('M03')" title="M03: Mine Cart Explorer">03</div>
+                    <div class="mat-marker" style="top:15%;left:25%"  onclick="scrollToMission('M04')" title="M04: Careful Rescue">04</div>
+                    <div class="mat-marker" style="top:5%;left:68%"   onclick="scrollToMission('M05')" title="M05: Who Lived Here?">05</div>
+                    <div class="mat-marker" style="top:17%;left:78%"  onclick="scrollToMission('M06')" title="M06: Smelter">06</div>
+                    <div class="mat-marker" style="top:5%;left:88%"   onclick="scrollToMission('M07')" title="M07: Weight Lifting">07</div>
+                    <div class="mat-marker" style="top:37%;left:89%"  onclick="scrollToMission('M08')" title="M08: Storage">08</div>
+                    <div class="mat-marker" style="top:40%;left:67%"  onclick="scrollToMission('M09')" title="M09: What's For Sale?">09</div>
+                    <div class="mat-marker" style="top:45%;left:55%"  onclick="scrollToMission('M10')" title="M10: Tip the Scale">10</div>
+                    <div class="mat-marker" style="top:83%;left:55%"  onclick="scrollToMission('M11')" title="M11: Fishing Artifacts">11</div>
+                    <div class="mat-marker" style="top:83%;left:31%"  onclick="scrollToMission('M12')" title="M12: Rescue Operation">12</div>
+                    <div class="mat-marker" style="top:39%;left:38%"  onclick="scrollToMission('M13')" title="M13: Statue Rebuild">13</div>
+                    <div class="mat-marker" style="top:43%;left:28%"  onclick="scrollToMission('M14')" title="M14: Forum">14</div>
+                    <div class="mat-marker" style="top:88%;left:88%"  onclick="scrollToMission('M15')" title="M15: Area Marking">15</div>
+                </div>
+            </div>
+
+            <!-- Missions Grid -->
+            <div class="missions-grid">
+
+                <!-- M01 -->
+                <div class="mc" id="M01">
+                    <div class="mc-header"><span class="mc-num">01</span><span class="mc-name">Surface Excavation</span><span class="mc-pts" id="pts-m01">0</span></div>
+                    <div class="mc-option">
+                        <label>Cleared soil deposits <em>10 pts/each</em></label>
+                        <select onchange="u('m1p',this.value)">
+                            <option value="0">0</option><option value="1">1</option><option value="2">2</option>
+                        </select>
+                    </div>
+                    <div class="mc-option">
+                        <label>Brush not touching excavation area <em>10 pts</em></label>
+                        <select onchange="u('m1b',this.value)">
+                            <option value="0">No</option><option value="10">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M02 -->
+                <div class="mc" id="M02">
+                    <div class="mc-header"><span class="mc-num">02</span><span class="mc-name">Map Reveal</span><span class="mc-pts" id="pts-m02">0</span></div>
+                    <div class="mc-option">
+                        <label>Cleared topsoil sections <em>10 pts/each</em></label>
+                        <select onchange="u('m2',this.value)">
+                            <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M03 -->
+                <div class="mc" id="M03">
+                    <div class="mc-header"><span class="mc-num">03</span><span class="mc-name">Mine Cart Explorer</span><span class="mc-pts" id="pts-m03">0</span></div>
+                    <div class="mc-option">
+                        <label>Cart in opponent's area <em>30 pts</em></label>
+                        <select onchange="u('m3c',this.value)">
+                            <option value="0">No</option><option value="30">Yes</option>
+                        </select>
+                    </div>
+                    <div class="mc-option">
+                        <label>Opponent's cart with you (bonus) <em>10 pts</em></label>
+                        <select onchange="u('m3b',this.value)">
+                            <option value="0">No</option><option value="10">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M04 -->
+                <div class="mc" id="M04">
+                    <div class="mc-header"><span class="mc-num">04</span><span class="mc-name">Careful Rescue</span><span class="mc-pts" id="pts-m04">0</span></div>
+                    <div class="mc-option">
+                        <label>Artifact not touching mine <em>30 pts</em></label>
+                        <select onchange="u('m4a',this.value)">
+                            <option value="0">No</option><option value="30">Yes</option>
+                        </select>
+                    </div>
+                    <div class="mc-option">
+                        <label>Supports standing <em>10 pts</em></label>
+                        <select onchange="u('m4s',this.value)">
+                            <option value="0">No</option><option value="10">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M05 -->
+                <div class="mc" id="M05">
+                    <div class="mc-header"><span class="mc-num">05</span><span class="mc-name">Who Lived Here?</span><span class="mc-pts" id="pts-m05">0</span></div>
+                    <div class="mc-option">
+                        <label>Foundation completely face-up <em>30 pts</em></label>
+                        <select onchange="u('m5',this.value)">
+                            <option value="0">No</option><option value="30">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M06 -->
+                <div class="mc" id="M06">
+                    <div class="mc-header"><span class="mc-num">06</span><span class="mc-name">Smelter</span><span class="mc-pts" id="pts-m06">0</span></div>
+                    <div class="mc-option">
+                        <label>Blocks not touching smelter <em>10 pts/each</em></label>
+                        <select onchange="u('m6',this.value)">
+                            <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M07 -->
+                <div class="mc" id="M07">
+                    <div class="mc-header"><span class="mc-num">07</span><span class="mc-name">Weight Lifting</span><span class="mc-pts" id="pts-m07">0</span></div>
+                    <div class="mc-option">
+                        <label>Millstone not touching base <em>30 pts</em></label>
+                        <select onchange="u('m7',this.value)">
+                            <option value="0">No</option><option value="30">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M08 -->
+                <div class="mc" id="M08">
+                    <div class="mc-header"><span class="mc-num">08</span><span class="mc-name">Storage</span><span class="mc-pts" id="pts-m08">0</span></div>
+                    <div class="mc-option">
+                        <label>Food items outside storage <em>10 pts/each</em></label>
+                        <select onchange="u('m8',this.value)">
+                            <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M09 -->
+                <div class="mc" id="M09">
+                    <div class="mc-header"><span class="mc-num">09</span><span class="mc-name">What's For Sale?</span><span class="mc-pts" id="pts-m09">0</span></div>
+                    <div class="mc-option">
+                        <label>Roof completely removed <em>20 pts</em></label>
+                        <select onchange="u('m9r',this.value)">
+                            <option value="0">No</option><option value="20">Yes</option>
+                        </select>
+                    </div>
+                    <div class="mc-option">
+                        <label>Products removed <em>10 pts</em></label>
+                        <select onchange="u('m9i',this.value)">
+                            <option value="0">No</option><option value="10">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M10 -->
+                <div class="mc" id="M10">
+                    <div class="mc-header"><span class="mc-num">10</span><span class="mc-name">Tip the Scale</span><span class="mc-pts" id="pts-m10">0</span></div>
+                    <div class="mc-option">
+                        <label>Scale tipped &amp; touching mat <em>20 pts</em></label>
+                        <select onchange="u('m10t',this.value)">
+                            <option value="0">No</option><option value="20">Yes</option>
+                        </select>
+                    </div>
+                    <div class="mc-option">
+                        <label>Pan completely removed <em>10 pts</em></label>
+                        <select onchange="u('m10k',this.value)">
+                            <option value="0">No</option><option value="10">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M11 -->
+                <div class="mc" id="M11">
+                    <div class="mc-header"><span class="mc-num">11</span><span class="mc-name">Fishing Artifacts</span><span class="mc-pts" id="pts-m11">0</span></div>
+                    <div class="mc-option">
+                        <label>Artifacts above level <em>20 pts</em></label>
+                        <select onchange="u('m11e',this.value)">
+                            <option value="0">No</option><option value="20">Yes</option>
+                        </select>
+                    </div>
+                    <div class="mc-option">
+                        <label>Bonus: Flag down <em>10 pts</em></label>
+                        <select onchange="u('m11b',this.value)">
+                            <option value="0">No</option><option value="10">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M12 -->
+                <div class="mc" id="M12">
+                    <div class="mc-header"><span class="mc-num">12</span><span class="mc-name">Rescue Operation</span><span class="mc-pts" id="pts-m12">0</span></div>
+                    <div class="mc-option">
+                        <label>Sand completely cleared <em>20 pts</em></label>
+                        <select onchange="u('m12k',this.value)">
+                            <option value="0">No</option><option value="20">Yes</option>
+                        </select>
+                    </div>
+                    <div class="mc-option">
+                        <label>Ship completely raised <em>10 pts</em></label>
+                        <select onchange="u('m12g',this.value)">
+                            <option value="0">No</option><option value="10">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M13 -->
+                <div class="mc" id="M13">
+                    <div class="mc-header"><span class="mc-num">13</span><span class="mc-name">Statue Rebuild</span><span class="mc-pts" id="pts-m13">0</span></div>
+                    <div class="mc-option">
+                        <label>Statue completely raised <em>30 pts</em></label>
+                        <select onchange="u('m13',this.value)">
+                            <option value="0">No</option><option value="30">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- M14 -->
+                <div class="mc" id="M14">
+                    <div class="mc-header"><span class="mc-num">14</span><span class="mc-name">Forum</span><span class="mc-pts" id="pts-m14">0</span></div>
+                    <div class="mc-option">
+                        <label>Artifacts in forum (max 7) <em>5 pts/each</em></label>
+                        <input type="number" min="0" max="7" value="0" onchange="u('m14',this.value)">
+                    </div>
+                </div>
+
+                <!-- M15 -->
+                <div class="mc" id="M15">
+                    <div class="mc-header"><span class="mc-num">15</span><span class="mc-name">Area Marking</span><span class="mc-pts" id="pts-m15">0</span></div>
+                    <div class="mc-option">
+                        <label>Marked areas (flags) <em>10 pts/each</em></label>
+                        <select onchange="u('m15',this.value)">
+                            <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RIGHT: Score Panel + History -->
+        <div class="score-sidebar">
+            <div class="score-display sticky-score">
+                <div class="score-label">Total Score</div>
+                <div class="score-number" id="total">70</div>
+                <div class="score-breakdown">
+                    <div class="score-row"><span>Missions</span><span id="breakdown-missions">0</span></div>
+                    <div class="score-row"><span>Inspection</span><span id="breakdown-inspect">20</span></div>
+                    <div class="score-row"><span>Precision</span><span id="breakdown-precision">50</span></div>
+                </div>
+                <button class="btn-save-big" onclick="openSaveModal()">💾 Save This Score</button>
+            </div>
+
+            <!-- Saved Scores -->
+            <div class="history-panel">
+                <div class="history-header">
+                    <h3>Saved Scores</h3>
+                    <button class="btn-refresh" onclick="loadHistory()">↻</button>
+                </div>
+                <div class="history-list" id="historyList">
+                    <div class="history-empty">Log in and save a score to see it here.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Save Modal -->
+<div class="modal-overlay" id="saveModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>💾 Save Score</h3>
+            <button class="modal-close" onclick="closeSaveModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <p>Current total: <strong id="modal-score">0</strong> points</p>
+            <div class="form-group">
+                <label for="scoreNote">Note (optional)</label>
+                <input type="text" id="scoreNote" placeholder="e.g. Round 1, Practice run...">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="saveScore()">Save Score</button>
+            <button class="btn btn-outline" onclick="closeSaveModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="{{ url_for('static', filename='js/score.js') }}"></script>
+{% endblock %}

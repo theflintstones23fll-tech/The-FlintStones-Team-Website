@@ -1,509 +1,279 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <title>The FlintStones Website</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% extends "base.html" %}
+{% block title %}The Flintstones — FLL National Champions{% endblock %}
 
-        body {
-            font-family: "Source Sans Pro", Arial, sans-serif;
-            background: #f4f4f4;
-            color: #000;
-            line-height: 1.6;
-            padding-top: 70px;
-        }
+{% block content %}
 
-        /* Header Styles */
-        #header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: #bb6401;
-            border-bottom: 2px solid rgba(160, 160, 160, 0.3);
-            z-index: 1000;
-            padding: 0 20px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        #header h1 {
-            color: #fff;
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        #header h1 a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #ffe4b5;
-        }
-
-        .logo-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.8rem;
-            cursor: pointer;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 70px;
-            left: 0;
-            width: 100%;
-            background: #bb6401;
-            padding: 20px;
-            z-index: 999;
-        }
-
-        .mobile-menu.active {
-            display: block;
-        }
-
-        .mobile-menu ul {
-            list-style: none;
-        }
-
-        .mobile-menu li {
-            margin: 15px 0;
-        }
-
-        .mobile-menu a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: block;
-        }
-
-        /* Main Content */
-        #main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        /* Team Section */
-        .team {
-            margin-bottom: 60px;
-        }
-
-        .team h2 {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 20px;
-        }
-
-        .team > p {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 40px;
-            font-size: 1rem;
-        }
-
-        .team-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .card {
-            background: #fff;
-            padding: 30px 20px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            transition: transform 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .team-image-wrapper {
-            width: 130px;
-            height: 130px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-
-        .team-member-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .name {
-            font-size: 1.1rem;
-            font-weight: 800;
-            margin-bottom: 5px;
-        }
-
-        .position {
-            color: #bb6401;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .feature-text {
-            color: #666;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        /* Project Section */
-        .project {
-            margin-bottom: 60px;
-        }
-
-        .project h2 {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 40px;
-        }
-
-        .project-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .project-text {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .project-text h3 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .project-text p {
-            margin-bottom: 20px;
-            line-height: 1.8;
-        }
-
-        .try_btn {
-            background: #e74c3c;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-        .try_btn:hover {
-            background: #c0392b;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
-        }
-
-        .project-image {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .project-image img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            body {
-                padding-top: 70px;
-            }
-
-            #header {
-                height: 70px;
-                padding: 0 15px;
-            }
-
-            #header h1 {
-                font-size: 1.2rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .team h2, .project h2 {
-                font-size: 1.5rem;
-            }
-
-            .team-container {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 20px;
-            }
-
-            .project-content {
-                flex-direction: column;
-            }
-
-            .project-text, .project-image {
-                min-width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            #header h1 {
-                font-size: 1rem;
-            }
-
-            .team-container {
-                grid-template-columns: 1fr;
-            }
-
-            .card {
-                padding: 20px 15px;
-            }
-
-            .try_btn {
-                padding: 12px 30px;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <header id="header">
-        <h1><a href="#home">The FlintStones</a></h1>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#team">Our Team</a></li>
-                <li><a href="#project">Our Project</a></li>
-                <li><a href="https://gemini.google.com/gem/1TIKnzAwIovfqnrmbvtkVpVeD7ACHvqce?usp=sharing">FLL Chatbot</a></li>
-                <li><a href="/score">Score Calculator</a></li>
-                <li><a href="https://fll-simulator.vercel.app/">FLL Simulation</a></li>
-                <li><a href="https://theflintstones.itch.io/archeia">Archeia</a></li>
-            </ul>
-        </nav>
-        <button class="menu-toggle" id="menuToggle">☰</button>
-    </header>
-
-    <!-- Mobile Menu -->
-    <nav class="mobile-menu" id="mobileMenu">
-        <ul>
-            <li><a href="#team">Our Team</a></li>
-            <li><a href="#project">Our Project</a></li>
-            <li><a href="https://gemini.google.com/gem/1TIKnzAwIovfqnrmbvtkVpVeD7ACHvqce?usp=sharing">FLL Chatbot</a></li>
-            <li><a href="/score">Score Calculator</a></li>
-            <li><a href="https://fll-simulator.vercel.app/">FLL Simulation</a></li>
-            <li><a href="https://theflintstones.itch.io/archeia">Archeia</a></li>
-        </ul>
-    </nav>
-
-    <!-- Main Content -->
-    <div id="main">
-        <!-- Team Section -->
-        <section id="team" class="team">
-            <h2>Our Team</h2>
-            <p>We are The FlintStones, a dedicated FLL team working together to solve challenges through innovation, creativity, and teamwork. Meet our talented team members who bring unique skills and passion to every project.</p>
-            
-            <div class="team-container">
-                <div class="card">
-                    <div class="team-image-wrapper">
-                        <img class="team-member-image" src="../static/images/Ali.png" alt="Ali Aslan İşkol">
-                    </div>
-                    <p class="name">Ali Aslan İşkol</p>
-                    <p class="position">Team Member</p>
-                    <p class="feature-text">Passionate about robotics and programming, bringing innovative solutions to our team.</p>
-                </div>
-
-                <div class="card">
-                    <div class="team-image-wrapper">
-                        <img class="team-member-image" src="../static/images/Asil.png" alt="Asil Kahraman">
-                    </div>
-                    <p class="name">Asil Kahraman</p>
-                    <p class="position">Team Member</p>
-                    <p class="feature-text">Dedicated to excellence in design and engineering with creative problem-solving skills.</p>
-                </div>
-
-                <div class="card">
-                    <div class="team-image-wrapper">
-                        <img class="team-member-image" src="../static/images/Batuhan.png" alt="Batuhan Pekcan">
-                    </div>
-                    <p class="name">Batuhan Pekcan</p>
-                    <p class="position">Team Member</p>
-                    <p class="feature-text">Expert in mechanical design and construction with attention to detail.</p>
-                </div>
-
-                <div class="card">
-                    <div class="team-image-wrapper">
-                        <img class="team-member-image" src="../static/images/DenizDerya.png" alt="Deniz Derya Gökçek">
-                    </div>
-                    <p class="name">Deniz Derya Gökçek</p>
-                    <p class="position">Team Member</p>
-                    <p class="feature-text">Skilled in research and project management, keeping our team organized.</p>
-                </div>
-
-                <div class="card">
-                    <div class="team-image-wrapper">
-                        <img class="team-member-image" src="../static/images/DenizTurker.png" alt="Deniz Türker">
-                    </div>
-                    <p class="name">Deniz Türker</p>
-                    <p class="position">Team Member</p>
-                    <p class="feature-text">Talented in coding and algorithm development for robot automation.</p>
-                </div>
-
-                <div class="card">
-                    <div class="team-image-wrapper">
-                        <img class="team-member-image" src="../static/images/EylulDoga.png" alt="Eylül Doğa Soytekin">
-                    </div>
-                    <p class="name">Eylül Doğa Soytekin</p>
-                    <p class="position">Team Member</p>
-                    <p class="feature-text">Creative thinker with strong communication and presentation skills.</p>
-                </div>
-
-                <div class="card">
-                    <div class="team-image-wrapper">
-                        <img class="team-member-image" src="../static/images/Eylul.png" alt="Eylül Karabulak">
-                    </div>
-                    <p class="name">Eylül Karabulak</p>
-                    <p class="position">Team Member</p>
-                    <p class="feature-text">Enthusiastic about STEM education and community outreach initiatives.</p>
-                </div>
-
-                <div class="card">
-                    <div class="team-image-wrapper">
-                        <img class="team-member-image" src="../static/images/Okyanus.png">
-                    </div>
-                    <p class="name">Okyanus Bora Şevik</p>
-                    <p class="position">Team Member</p>
-                    <p class="feature-text">Analytical thinker with expertise in strategy and competition planning.</p>
-                </div>
-
-                <div class="card">
-                    <div class="team-image-wrapper">
-                        <img class="team-member-image" src="../static/images/Ozan.png" alt="Ozan Özçelik">
-                    </div>
-                    <p class="name">Ozan Özçelik</p>
-                    <p class="position">Team Member</p>
-                    <p class="feature-text">Innovative problem solver with a passion for technology and teamwork.</p>
-                </div>
-
-                <div class="card">
-                    <div class="team-image-wrapper">
-                        <img class="team-member-image" src="../static/images/Ozgu.png" alt="Özgü Soylu">
-                    </div>
-                    <p class="name">Özgü Soylu</p>
-                    <p class="position">Team Member</p>
-                    <p class="feature-text">Detail-oriented team player with strong technical and collaborative skills.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Project Section -->
-        <section id="project" class="project">
-            <h2>Our Project</h2>
-            <div class="project-content">
-                <div class="project-text">
-                    <h3>The Flint-AI</h3>
-                    <p>Our innovative AI-powered solution for FLL challenges combines cutting-edge technology with creative problem-solving. The Flint-AI helps teams analyze, strategize, and optimize their robot performance for competition success.</p>
-                    <a class="try_btn" href="#chatbot">Try Our AI Model Now</a>
-                </div>
-                <div class="project-image">
-                    <img src="../static/images/Plate.png" alt="Flint-AI Project">
-                </div>
-            </div>
-        </section>
+<!-- ─── HERO ─────────────────────────────────────────── -->
+<section class="hero" id="hero">
+    <div class="hero-bg hero-photo" style="background-image: url('{{ url_for('static', filename='images/team_photo.jpg') }}');"></div>
+    <div class="hero-dark-overlay"></div>
+    <div class="hero-dust"></div>
+    <div class="hero-content">
+        <div class="hero-badge" data-i18n="hero.badge">🏆 National Champions</div>
+        <h1 class="hero-title">The Flintstones</h1>
+        <p class="hero-tagline" data-i18n="hero.tagline">First Lego League · Unearthed Season</p>
+        <p class="hero-description" data-i18n="hero.desc">Unearthing the future of archaeology — one fragment at a time</p>
+        <div class="hero-actions">
+            <a href="#project" class="btn btn-primary" data-i18n="hero.btn.project">Our Project</a>
+            {% if session.get('user_id') %}
+            <a href="{{ url_for('score_calculator') }}" class="btn btn-secondary" data-i18n="hero.btn.score">Score Calculator</a>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-secondary" data-i18n="hero.btn.login">Login to Score</a>
+            {% endif %}
+        </div>
     </div>
+    <div class="hero-scroll-hint">
+        <span data-i18n="hero.scroll">Dig deeper</span>
+        <div class="scroll-arrow"></div>
+    </div>
+</section>
 
-    <script>
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const mobileMenu = document.getElementById('mobileMenu');
+<!-- ─── ABOUT FLL ─────────────────────────────────────── -->
+<section class="section section-earth" id="fll">
+    <div class="section-label" data-i18n="fll.label">What is</div>
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="fll.title">First Lego League</h2>
+            <div class="title-line"></div>
+        </div>
+        <div class="fll-grid">
+            <div class="fll-card" data-aos>
+                <div class="fll-icon">🤖</div>
+                <h3 data-i18n="fll.card1.title">Robot Game</h3>
+                <p data-i18n="fll.card1.text">Teams design, build and program autonomous LEGO robots to complete missions on a themed playing field in 2.5 minutes.</p>
+            </div>
+            <div class="fll-card" data-aos>
+                <div class="fll-icon">💡</div>
+                <h3 data-i18n="fll.card2.title">Innovation Project</h3>
+                <p data-i18n="fll.card2.text">Teams identify a real-world problem related to the season theme, research it deeply, and develop an innovative solution.</p>
+            </div>
+            <div class="fll-card" data-aos>
+                <div class="fll-icon">🤝</div>
+                <h3 data-i18n="fll.card3.title">Core Values</h3>
+                <p data-i18n="fll.card3.text">Gracious Professionalism® and Coopertition® are central — teams compete and cooperate, discovering that helping others is the key to success.</p>
+            </div>
+            <div class="fll-card" data-aos>
+                <div class="fll-icon">⛏</div>
+                <h3 data-i18n="fll.card4.title">Unearthed Season</h3>
+                <p data-i18n="fll.card4.text">In 2025–2026, FLL teams trace the footsteps of ancient civilizations — uncovering secrets of underground structures, archaeological processes, and humanity's earliest builders.</p>
+            </div>
+        </div>
+        <div class="fll-stats">
+            <div class="stat"><span class="stat-number">45+</span><span class="stat-label" data-i18n="fll.stat.countries">Countries</span></div>
+            <div class="stat"><span class="stat-number">110K+</span><span class="stat-label" data-i18n="fll.stat.teams">Teams</span></div>
+            <div class="stat"><span class="stat-number">15</span><span class="stat-label" data-i18n="fll.stat.missions">Missions</span></div>
+            <div class="stat"><span class="stat-number">2.5</span><span class="stat-label" data-i18n="fll.stat.min">Min / Match</span></div>
+        </div>
+    </div>
+</section>
 
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
-            menuToggle.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
-        });
+<!-- ─── PROJECT ───────────────────────────────────────── -->
+<section class="section section-dark" id="project">
+    <div class="section-label" data-i18n="project.label">Innovation Project</div>
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">FlintAI</h2>
+            <div class="title-line"></div>
+            <p class="section-subtitle" data-i18n="project.subtitle">Our Solution to Archaeological Fragmentation</p>
+        </div>
+        <div class="project-hero-block">
+            <div class="project-problem">
+                <div class="problem-badge" data-i18n="project.prob.badge">The Problem</div>
+                <h3 data-i18n="project.prob.title">Fragments Lost in Time</h3>
+                <p data-i18n="project.prob.text">Archaeologists excavating ancient sites routinely recover thousands of pottery shards, stone fragments, and broken artifacts — but lack effective systematic methods to match and reassemble them.</p>
+                <ul class="problem-list">
+                    <li data-i18n="project.prob.li1">⚠ Thousands of fragments per excavation site</li>
+                    <li data-i18n="project.prob.li2">⚠ Manual matching takes months or years</li>
+                    <li data-i18n="project.prob.li3">⚠ Institutional knowledge lost when experts retire</li>
+                    <li data-i18n="project.prob.li4">⚠ Storage degradation damages fragments further</li>
+                </ul>
+            </div>
+            <div class="project-solution">
+                <div class="solution-badge" data-i18n="project.sol.badge">Our Solution</div>
+                <h3 data-i18n="project.sol.title">AI-Powered Fragment Matching</h3>
+                <p data-i18n="project.sol.text">FlintAI is a web platform that uses computer vision and machine learning to analyze photographs of artifact fragments, classify them by structural characteristics and suggest fragments with high matching potential.</p>
+                <div class="solution-features">
+                    <div class="feature">
+                        <span class="feature-icon">📸</span>
+                        <div><strong data-i18n="project.f1.title">Photo Analysis</strong><p data-i18n="project.f1.text">Upload fragment photos; AI extracts shape, texture, and edge data</p></div>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🧠</span>
+                        <div><strong data-i18n="project.f2.title">Smart Classification</strong><p data-i18n="project.f2.text">CNN model classifies fragments by period, material, and form</p></div>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🔗</span>
+                        <div><strong data-i18n="project.f3.title">Match Suggestions</strong><p data-i18n="project.f3.text">Similarity scoring ranks candidate matches from database</p></div>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🗄</span>
+                        <div><strong data-i18n="project.f4.title">Digital Archive</strong><p data-i18n="project.f4.text">Preserve fragments digitally for future reconstruction</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="project-process">
+            <h3 class="process-title" data-i18n="project.how">How It Works</h3>
+            <div class="process-steps">
+                <div class="process-step"><div class="step-num">01</div><div class="step-content"><h4 data-i18n="project.step1.title">Photograph</h4><p data-i18n="project.step1.text">Archaeologist photographs fragment under standardized lighting</p></div></div>
+                <div class="process-arrow">→</div>
+                <div class="process-step"><div class="step-num">02</div><div class="step-content"><h4 data-i18n="project.step2.title">Upload</h4><p data-i18n="project.step2.text">Image uploaded to FlintAI via web or mobile interface</p></div></div>
+                <div class="process-arrow">→</div>
+                <div class="process-step"><div class="step-num">03</div><div class="step-content"><h4 data-i18n="project.step3.title">Analyze</h4><p data-i18n="project.step3.text">AI model extracts 128-dimensional feature vector from fragment</p></div></div>
+                <div class="process-arrow">→</div>
+                <div class="process-step"><div class="step-num">04</div><div class="step-content"><h4 data-i18n="project.step4.title">Match</h4><p data-i18n="project.step4.text">Top candidate matches surfaced from the fragment database</p></div></div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        // Close mobile menu when clicking a link
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
-                menuToggle.textContent = '☰';
-            });
-        });
+<!-- ─── SPONSORSHIP ─────────────────────────────────────── -->
+<section class="section section-sponsor" id="sponsor">
+    <div class="sponsor-bg-text">SPONSOR</div>
+    <div class="container">
+        <div class="sponsor-top">
+            <div class="sponsor-eyebrow" data-i18n="sponsor.eyebrow">🌍 FIRST World Festival · Houston, USA</div>
+            <h2 class="sponsor-headline" data-i18n="sponsor.headline">Would You Like to Be Our Sponsor?</h2>
+            <p class="sponsor-intro" data-i18n="sponsor.intro">We are <strong>Turkey's FLL National Champions</strong>, competing at the world's largest science &amp; technology tournament — the <strong>FIRST World Festival in Houston</strong>. We need your support to get there.</p>
+        </div>
+        <div class="sponsor-story">
+            <div class="sponsor-story-text">
+                <p data-i18n="sponsor.story1">The Flintstones were founded under Özel Çakabey Okulları for the 2025–2026 season. We placed 3rd at the FLL Aegean Region Tournament, earned a spot at Nationals, and then <strong>became Turkey Champions</strong> — beating 74 teams from 21 cities. Now we represent Turkey at the international finals.</p>
+                <p data-i18n="sponsor.story2">Our coach Oğuzhan Köse has guided teams to the <strong>Asia-Pacific World Championship</strong> over 16 years. Our 10-member team of 9th and 10th graders is almost entirely scholarship-funded — your sponsorship directly enables us to compete on the world stage.</p>
+            </div>
+            <div class="sponsor-story-img">
+                <img src="{{ url_for('static', filename='images/team_photo.jpg') }}" alt="The Flintstones at Nationals">
+                <div class="sponsor-story-caption" data-i18n="sponsor.caption">🏆 National Champions — 74 Teams, 21 Cities</div>
+            </div>
+        </div>
+        <div class="sponsor-benefits-title" data-i18n="sponsor.benefits.title">What Sponsors Receive</div>
+        <div class="sponsor-benefits-grid">
+            <div class="spb"><div class="spb-icon">👕</div><h4 data-i18n="sponsor.b1.title">Jersey Visibility</h4><p data-i18n="sponsor.b1.text">Your company logo on our competition jerseys, worn on the world stage in Houston.</p></div>
+            <div class="spb"><div class="spb-icon">🌐</div><h4 data-i18n="sponsor.b2.title">Website & Social</h4><p data-i18n="sponsor.b2.text">Featured with your logo on our website and regular posts on our social media channels.</p></div>
+            <div class="spb"><div class="spb-icon">📢</div><h4 data-i18n="sponsor.b3.title">Brand Content</h4><p data-i18n="sponsor.b3.text">Promotional content and thank-you posts about your company published throughout the season.</p></div>
+            <div class="spb"><div class="spb-icon">🇹🇷</div><h4 data-i18n="sponsor.b4.title">National Pride</h4><p data-i18n="sponsor.b4.text">Be part of Turkey's international STEM representation at the world's biggest robotics event.</p></div>
+        </div>
+        <div class="sponsor-cta-row">
+            <div class="sponsor-cta-text">
+                <p data-i18n="sponsor.cta.ready">Ready to dig in with us?</p>
+                <p class="sponsor-contact-detail">📧 theflintstones23fll@gmail.com &nbsp;|&nbsp; 📞 0 534 256 24 57</p>
+                <p class="sponsor-contact-detail">📸 @theflintstones_fll &nbsp;|&nbsp; Coach: Oğuzhan KÖSE</p>
+            </div>
+            <div class="sponsor-cta-buttons">
+                <a href="{{ url_for('register') }}?type=sponsor" class="btn-sponsor" data-i18n="sponsor.cta.register">🤝 Register as Sponsor</a>
+                <a href="mailto:theflintstones23fll@gmail.com" class="btn-sponsor-outline" data-i18n="sponsor.cta.email">📧 Email Us</a>
+                <a href="{{ url_for('static', filename='images/sponsorship.pdf') }}" target="_blank" class="btn-sponsor-outline" data-i18n="sponsor.cta.pdf">📄 Download Sponsorship File</a>
+            </div>
+        </div>
+    </div>
+</section>
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
-</body>
+<!-- ─── DIGITAL TOOLS ──────────────────────────────────── -->
+<section class="section section-dark" id="tools">
+    <div class="section-label" data-i18n="tools.label">Our Ecosystem</div>
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="tools.title">Our Digital Tools</h2>
+            <div class="title-line"></div>
+            <p class="section-subtitle" data-i18n="tools.subtitle">Beyond the competition floor — tools we built for the entire FLL community</p>
+        </div>
+        <div class="tools-grid">
+            <a href="https://gemini.google.com/gem/1TIKnzAwIovfqnrmbvtkVpVeD7ACHvqce?usp=sharing" target="_blank" class="tool-card">
+                <div class="tool-icon">🤖</div>
+                <div class="tool-content">
+                    <h3 data-i18n="tools.chatbot.title">FLL Chatbot</h3>
+                    <span class="tool-tag">Gemini AI</span>
+                    <p data-i18n="tools.chatbot.text">Ask anything about FLL Unearthed — rules, missions, scoring strategy, and more.</p>
+                    <div class="tool-link" data-i18n="tools.chatbot.link">Open Chatbot →</div>
+                </div>
+            </a>
+            <a href="https://fll-simulator.vercel.app/" target="_blank" class="tool-card">
+                <div class="tool-icon">🕹</div>
+                <div class="tool-content">
+                    <h3 data-i18n="tools.sim.title">FLL Simulation</h3>
+                    <span class="tool-tag">Interactive Web App</span>
+                    <p data-i18n="tools.sim.text">Practice mission runs in our browser-based FLL field simulator.</p>
+                    <div class="tool-link" data-i18n="tools.sim.link">Launch Simulator →</div>
+                </div>
+            </a>
+            <a href="https://theflintstones.itch.io/archeia" target="_blank" class="tool-card tool-card-gold">
+                <div class="tool-icon">🎮</div>
+                <div class="tool-content">
+                    <h3>Archeia</h3>
+                    <span class="tool-tag tool-tag-gold">Game · itch.io</span>
+                    <p data-i18n="tools.archeia.text">An original game inspired by our innovation project — piece together ancient artifact fragments and uncover the secrets of lost civilizations.</p>
+                    <div class="tool-link" data-i18n="tools.archeia.link">Play Now →</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ─── ABOUT TEAM ─────────────────────────────────────── -->
+<section class="section section-sand" id="about">
+    <div class="section-label" data-i18n="about.label">Our Story</div>
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="about.title">About the Team</h2>
+            <div class="title-line"></div>
+        </div>
+        <div class="about-grid">
+            <div class="about-text">
+                <p class="about-lead" data-i18n="about.lead">We are <strong>The Flintstones</strong> — a passionate FLL team named after the enduring spirit of those who built civilization from stone.</p>
+                <p data-i18n="about.p2">Founded at Özel Çakabey Okulları under coach Oğuzhan Köse — who has led teams to the Asia-Pacific World Championship over 16 years — we placed 3rd at regionals, then conquered the National Tournament, beating 74 teams from 21 cities across Turkey.</p>
+                <p data-i18n="about.p3">Our team embodies FLL's Core Values: we discovered together, made mistakes together, and built something we're proud of — together.</p>
+                <div class="about-values">
+                    <span class="value-chip">🤝 Gracious Professionalism</span>
+                    <span class="value-chip">🔬 Real-World Impact</span>
+                    <span class="value-chip">🏅 National Champions</span>
+                    <span class="value-chip">🌍 Özel Çakabey Okulları</span>
+                </div>
+            </div>
+            <div class="about-logo-block">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Team Logo" class="about-logo">
+                <div class="about-logo-caption" data-i18n="about.caption">The Flintstones · FLL Unearthed</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── TEAM MEMBERS ──────────────────────────────────── -->
+<section class="section section-earth" id="team">
+    <div class="section-label" data-i18n="team.label">The Crew</div>
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="team.title">Meet the Team</h2>
+            <div class="title-line"></div>
+        </div>
+        <div class="team-grid">
+            <div class="team-card" data-aos><div class="team-avatar-photo"><img src="{{ url_for('static', filename='images/Ali.png') }}" alt="Ali Aslan İşkol"></div><h3>Ali Aslan İşkol</h3><span class="team-role" data-i18n="team.role">Team Member</span><p data-i18n="team.ali">Passionate about robotics and programming, bringing innovative solutions to our team.</p></div>
+            <div class="team-card" data-aos><div class="team-avatar-photo"><img src="{{ url_for('static', filename='images/Asil.png') }}" alt="Asil Kahraman"></div><h3>Asil Kahraman</h3><span class="team-role" data-i18n="team.role">Team Member</span><p data-i18n="team.asil">Dedicated to excellence in design and engineering with creative problem-solving skills.</p></div>
+            <div class="team-card" data-aos><div class="team-avatar-photo"><img src="{{ url_for('static', filename='images/Batuhan.png') }}" alt="Batuhan Pekcan"></div><h3>Batuhan Pekcan</h3><span class="team-role" data-i18n="team.role">Team Member</span><p data-i18n="team.batuhan">Expert in mechanical design and construction with attention to detail.</p></div>
+            <div class="team-card" data-aos><div class="team-avatar-photo"><img src="{{ url_for('static', filename='images/DenizDerya.png') }}" alt="Deniz Derya Gökçek"></div><h3>Deniz Derya Gökçek</h3><span class="team-role" data-i18n="team.role">Team Member</span><p data-i18n="team.denizderya">Skilled in research and project management, keeping our team organized.</p></div>
+            <div class="team-card" data-aos><div class="team-avatar-photo"><img src="{{ url_for('static', filename='images/DenizTurker.png') }}" alt="Deniz Türker"></div><h3>Deniz Türker</h3><span class="team-role" data-i18n="team.role">Team Member</span><p data-i18n="team.denizturker">Talented in coding and algorithm development for robot automation.</p></div>
+            <div class="team-card" data-aos><div class="team-avatar-photo"><img src="{{ url_for('static', filename='images/EylulDoga.png') }}" alt="Eylül Doğa Soytekin"></div><h3>Eylül Doğa Soytekin</h3><span class="team-role" data-i18n="team.role">Team Member</span><p data-i18n="team.eyuldoga">Creative thinker with strong communication and presentation skills.</p></div>
+            <div class="team-card" data-aos><div class="team-avatar-photo"><img src="{{ url_for('static', filename='images/Eylul.png') }}" alt="Eylül Karabulak"></div><h3>Eylül Karabulak</h3><span class="team-role" data-i18n="team.role">Team Member</span><p data-i18n="team.eylul">Enthusiastic about STEM education and community outreach initiatives.</p></div>
+            <div class="team-card" data-aos><div class="team-avatar-photo"><img src="{{ url_for('static', filename='images/Okyanus.png') }}" alt="Okyanus Bora Şevik"></div><h3>Okyanus Bora Şevik</h3><span class="team-role" data-i18n="team.role">Team Member</span><p data-i18n="team.okyanus">Analytical thinker with expertise in strategy and competition planning.</p></div>
+            <div class="team-card" data-aos><div class="team-avatar-photo"><img src="{{ url_for('static', filename='images/Ozan.png') }}" alt="Ozan Özçelik"></div><h3>Ozan Özçelik</h3><span class="team-role" data-i18n="team.role">Team Member</span><p data-i18n="team.ozan">Innovative problem solver with a passion for technology and teamwork.</p></div>
+            <div class="team-card" data-aos><div class="team-avatar-photo"><img src="{{ url_for('static', filename='images/Ozgu.png') }}" alt="Özgü Soylu"></div><h3>Özgü Soylu</h3><span class="team-role" data-i18n="team.role">Team Member</span><p data-i18n="team.ozgu">Detail-oriented team player with strong technical and collaborative skills.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── CTA ───────────────────────────────────────────── -->
+<section class="section section-cta">
+    <div class="container cta-container">
+        <h2 data-i18n="cta.title">Ready to calculate your score?</h2>
+        <p data-i18n="cta.text">Use our FLL Unearthed Score Calculator — track missions, log runs, and export results.</p>
+        {% if session.get('user_id') %}
+        <a href="{{ url_for('score_calculator') }}" class="btn btn-primary btn-large" data-i18n="cta.open">Open Score Calculator →</a>
+        {% else %}
+        <div class="cta-actions">
+            <a href="{{ url_for('login') }}" class="btn btn-primary btn-large" data-i18n="cta.login">Login</a>
+            <a href="{{ url_for('register') }}" class="btn btn-outline btn-large" data-i18n="cta.register">Create Account</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

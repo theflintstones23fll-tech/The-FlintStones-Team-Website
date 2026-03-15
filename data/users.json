@@ -1,0 +1,30 @@
+{
+  "admin": {
+    "id": "522cac24-ae0e-4da6-8946-0cdf1cff828a",
+    "username": "admin",
+    "password": "7b0143c5480f45bf43a3d08af09c1621fba232729fe5094537f7d2550913d200",
+    "role": "admin",
+    "created_at": "2026-03-15T19:17:34.086782"
+  },
+  "Batuhan": {
+    "id": "a2d9faf3-8fcc-45e4-a212-97a2f54906aa",
+    "username": "Batuhan",
+    "password": "8a9a8502c481962aec33a76b4a8ce7a95b603af5b8b8139c72bf2fc70062b0d2",
+    "role": "member",
+    "reg_type": "team",
+    "created_at": "2026-03-15T19:18:29.382216"
+  },
+  "Saybrone": {
+    "id": "f841619f-ee70-48bf-91ec-d50d23380a74",
+    "username": "Saybrone",
+    "password": "8a9a8502c481962aec33a76b4a8ce7a95b603af5b8b8139c72bf2fc70062b0d2",
+    "role": "sponsor",
+    "reg_type": "sponsor",
+    "created_at": "2026-03-15T19:19:03.472348",
+    "company": "a",
+    "contact": "a",
+    "phone": "a",
+    "email": "aa@gmail.com",
+    "message": "a"
+  }
+}

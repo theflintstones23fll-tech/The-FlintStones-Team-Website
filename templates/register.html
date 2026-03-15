@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Register — The Flintstones{% endblock %}
+
+{% block head %}
+<style>
+.reg-tabs { display:flex; gap:0; margin-bottom:32px; border-radius:8px; overflow:hidden; border:2px solid var(--earth-sand); }
+.reg-tab { flex:1; padding:13px 10px; text-align:center; cursor:pointer; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; background:var(--earth-cream); color:var(--text-light); border:none; transition:all 0.2s; font-weight:600; }
+.reg-tab.active { background:var(--earth-brown); color:var(--gold-light); }
+.reg-tab:first-child { border-right:2px solid var(--earth-sand); }
+.reg-panel { display:none; }
+.reg-panel.active { display:flex; flex-direction:column; gap:20px; }
+.sponsor-info-box { background:linear-gradient(135deg,#1a0d05,#2c1a0e); border:1px solid rgba(212,169,41,0.35); border-radius:8px; padding:18px 20px; margin-bottom:4px; }
+.sponsor-info-box h4 { font-family:var(--font-display); font-size:1rem; color:var(--gold-light); margin-bottom:10px; }
+.sponsor-info-box ul { list-style:none; display:flex; flex-direction:column; gap:6px; }
+.sponsor-info-box ul li { font-size:0.83rem; color:var(--earth-stone); padding-left:4px; }
+.sponsor-info-box ul li::before { content:'✓  '; color:var(--gold); font-weight:700; }
+.form-divider { font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--earth-stone); text-align:center; position:relative; margin:4px 0; }
+.form-divider::before,.form-divider::after { content:''; position:absolute; top:50%; width:30%; height:1px; background:var(--earth-sand); }
+.form-divider::before { left:0; } .form-divider::after { right:0; }
+.sponsor-textarea { width:100%; padding:12px 16px; border:2px solid var(--earth-sand); border-radius:8px; font-family:var(--font-body); font-size:0.95rem; color:var(--text-dark); background:var(--earth-cream); resize:vertical; transition:border-color 0.2s; }
+.sponsor-textarea:focus { outline:none; border-color:var(--gold); background:var(--white); }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-strata">
+        <div class="strata strata-2"></div>
+        <div class="strata strata-3"></div>
+    </div>
+    <div class="auth-container" style="max-width:520px;">
+        <div class="auth-logo">
+            <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
+        </div>
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-subtitle">Choose your registration type below</p>
+
+        <div class="reg-tabs">
+            <button class="reg-tab active" onclick="switchTab('team',this)">🪨 Team Member</button>
+            <button class="reg-tab" onclick="switchTab('sponsor',this)">🤝 Become a Sponsor</button>
+        </div>
+
+        <!-- TEAM PANEL -->
+        <div id="panel-team" class="reg-panel active">
+            <form class="auth-form" method="POST" action="{{ url_for('register') }}">
+                <input type="hidden" name="reg_type" value="team">
+                <div class="form-group">
+                    <label for="t-username">Username</label>
+                    <input type="text" id="t-username" name="username" placeholder="Choose a username (3+ chars)" required minlength="3">
+                </div>
+                <div class="form-group">
+                    <label for="t-password">Password</label>
+                    <input type="password" id="t-password" name="password" placeholder="At least 6 characters" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="t-confirm">Confirm Password</label>
+                    <input type="password" id="t-confirm" name="confirm_password" placeholder="Repeat your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Create Team Account 🪨</button>
+            </form>
+        </div>
+
+        <!-- SPONSOR PANEL -->
+        <div id="panel-sponsor" class="reg-panel">
+            <div class="sponsor-info-box">
+                <h4>🏆 What You Get as a Sponsor</h4>
+                <ul>
+                    <li>Your logo on our competition jerseys at FIRST World Festival, Houston</li>
+                    <li>Featured on our website with logo &amp; dedicated sponsor page</li>
+                    <li>Regular social media posts &amp; thank-you content on @theflintstones_fll</li>
+                    <li>Promotional brand content published throughout the season</li>
+                    <li>Recognition as a supporter of Turkey's international STEM representation</li>
+                    <li>Access to your personalized sponsor dashboard after registration</li>
+                </ul>
+            </div>
+
+            <form class="auth-form" method="POST" action="{{ url_for('register') }}" style="display:flex;flex-direction:column;gap:20px;">
+                <input type="hidden" name="reg_type" value="sponsor">
+
+                <div class="form-divider">Company Information</div>
+                <div class="form-group">
+                    <label for="s-company">Company / Organization Name *</label>
+                    <input type="text" id="s-company" name="company" placeholder="Your company name" required>
+                </div>
+                <div class="form-group">
+                    <label for="s-contact">Contact Person Name *</label>
+                    <input type="text" id="s-contact" name="contact" placeholder="Full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="s-email">Business Email *</label>
+                    <input type="email" id="s-email" name="email" placeholder="contact@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="s-phone">Phone Number</label>
+                    <input type="tel" id="s-phone" name="phone" placeholder="+90 ...">
+                </div>
+                <div class="form-group">
+                    <label for="s-message">Message / Sponsorship Interest</label>
+                    <textarea id="s-message" name="message" rows="3" class="sponsor-textarea" placeholder="Tell us how you'd like to support the team, any questions, or preferred sponsorship type..."></textarea>
+                </div>
+
+                <div class="form-divider">Account Credentials</div>
+                <div class="form-group">
+                    <label for="s-username">Username</label>
+                    <input type="text" id="s-username" name="username" placeholder="Choose a username (3+ chars)" required minlength="3">
+                </div>
+                <div class="form-group">
+                    <label for="s-password">Password</label>
+                    <input type="password" id="s-password" name="password" placeholder="At least 6 characters" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="s-confirm">Confirm Password</label>
+                    <input type="password" id="s-confirm" name="confirm_password" placeholder="Repeat your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full" style="background:var(--earth-brown);border-color:var(--gold);">
+                    Register as Sponsor 🤝
+                </button>
+                <p style="font-size:0.78rem;color:var(--text-light);text-align:center;margin-top:-8px;">
+                    After registering, our team will contact you at your business email within 48 hours.
+                </p>
+            </form>
+        </div>
+
+        <div class="auth-footer" style="margin-top:24px;">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+        </div>
+    </div>
+</section>
+<script>
+function switchTab(type, btn) {
+    document.querySelectorAll('.reg-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.reg-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + type).classList.add('active');
+}
+// Auto-open sponsor tab if redirected from sponsor section
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('type') === 'sponsor') {
+        const sponsorBtn = document.querySelectorAll('.reg-tab')[1];
+        if (sponsorBtn) switchTab('sponsor', sponsorBtn);
+        // Scroll into view smoothly
+        document.querySelector('.auth-container')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+});
+</script>
+{% endblock %}

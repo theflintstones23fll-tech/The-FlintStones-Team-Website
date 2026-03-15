@@ -1,95 +1,58 @@
-/*
-	Future Imperfect by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
+// ═══════════════════════════════════════════════════════
+//  THE FLINTSTONES — Main JS
+// ═══════════════════════════════════════════════════════
 
-(function($) {
+document.addEventListener('DOMContentLoaded', () => {
 
-	var	$window = $(window),
-		$body = $('body'),
-		$menu = $('#menu'),
-		$sidebar = $('#sidebar'),
-		$main = $('#main');
+  // ─── NAVBAR SCROLL ────────────────────────────────────
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
 
-	// Breakpoints.
-		breakpoints({
-			xlarge:   [ '1281px',  '1680px' ],
-			large:    [ '981px',   '1280px' ],
-			medium:   [ '737px',   '980px'  ],
-			small:    [ '481px',   '736px'  ],
-			xsmall:   [ null,      '480px'  ]
-		});
+  // ─── MOBILE DRAWER ────────────────────────────────────
+  const toggle = document.getElementById('menuToggle');
+  const drawer = document.getElementById('mobileDrawer');
 
-	// Play initial animations on page load.
-		$window.on('load', function() {
-			window.setTimeout(function() {
-				$body.removeClass('is-preload');
-			}, 100);
-		});
+  if (toggle && drawer) {
+    toggle.addEventListener('click', () => {
+      drawer.classList.toggle('open');
+    });
+    drawer.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => drawer.classList.remove('open'));
+    });
+  }
 
-	// Menu.
-		$menu
-			.appendTo($body)
-			.panel({
-				delay: 500,
-				hideOnClick: true,
-				hideOnSwipe: true,
-				resetScroll: true,
-				resetForms: true,
-				side: 'right',
-				target: $body,
-				visibleClass: 'is-menu-visible'
-			});
+  // ─── SCROLL ANIMATIONS ────────────────────────────────
+  const observers = document.querySelectorAll('[data-aos]');
+  if ('IntersectionObserver' in window && observers.length) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    observers.forEach(el => io.observe(el));
+  } else {
+    observers.forEach(el => el.classList.add('visible'));
+  }
 
-	// Search (header).
-		var $search = $('#search'),
-			$search_input = $search.find('input');
+  // ─── FLASH DISMISS ────────────────────────────────────
+  document.querySelectorAll('.flash').forEach(flash => {
+    setTimeout(() => flash.remove(), 5000);
+    flash.addEventListener('click', () => flash.remove());
+  });
 
-		$body
-			.on('click', '[href="#search"]', function(event) {
-
-				event.preventDefault();
-
-				// Not visible?
-					if (!$search.hasClass('visible')) {
-
-						// Reset form.
-							$search[0].reset();
-
-						// Show.
-							$search.addClass('visible');
-
-						// Focus input.
-							$search_input.focus();
-
-					}
-
-			});
-
-		$search_input
-			.on('keydown', function(event) {
-
-				if (event.keyCode == 27)
-					$search_input.blur();
-
-			})
-			.on('blur', function() {
-				window.setTimeout(function() {
-					$search.removeClass('visible');
-				}, 100);
-			});
-
-	// Intro.
-		var $intro = $('#intro');
-
-		// Move to main on <=large, back to sidebar on >large.
-			breakpoints.on('<=large', function() {
-				$intro.prependTo($main);
-			});
-
-			breakpoints.on('>large', function() {
-				$intro.prependTo($sidebar);
-			});
-
-})(jQuery);
+  // ─── SMOOTH ANCHOR SCROLL ─────────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+});

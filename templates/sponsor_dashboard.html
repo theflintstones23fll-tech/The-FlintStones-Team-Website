@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block title %}Sponsor Dashboard — The Flintstones{% endblock %}
+{% block head %}
+<style>
+.sdash { padding-top: 70px; min-height: 100vh; background: linear-gradient(160deg, #0e0604 0%, #1e0e06 40%, #2c1a0e 100%); }
+.sdash-header { padding: 48px 24px 36px; text-align: center; border-bottom: 1px solid rgba(212,169,41,0.15); }
+.sdash-welcome { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.sdash-title { font-family: var(--font-display); font-size: clamp(1.8rem,4vw,3rem); color: var(--gold-light); margin-bottom: 8px; }
+.sdash-sub { color: var(--earth-stone); font-size: 0.95rem; }
+.sdash-body { max-width: 1000px; margin: 0 auto; padding: 48px 24px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.sdash-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(212,169,41,0.2); border-radius: 12px; padding: 28px; }
+.sdash-card h3 { font-family: var(--font-display); font-size: 1.1rem; color: var(--gold-light); margin-bottom: 20px; border-bottom: 1px solid rgba(212,169,41,0.15); padding-bottom: 12px; }
+.sdash-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.sdash-row:last-child { border-bottom: none; }
+.sdash-label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--earth-stone); }
+.sdash-val { color: var(--earth-sand); font-size: 0.95rem; max-width: 60%; text-align: right; word-break: break-word; }
+.sdash-val-empty { color: var(--earth-mid); font-style: italic; font-size: 0.85rem; }
+.sdash-full { grid-column: 1/-1; }
+.benefit-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 4px; }
+.benefit-item { background: rgba(212,169,41,0.06); border: 1px solid rgba(212,169,41,0.15); border-radius: 8px; padding: 18px 16px; text-align: center; }
+.benefit-item .bi-icon { font-size: 1.8rem; margin-bottom: 10px; }
+.benefit-item h4 { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.benefit-item p { font-size: 0.8rem; color: var(--earth-stone); line-height: 1.5; }
+.sdash-status { display: inline-flex; align-items: center; gap: 6px; background: rgba(107,142,35,0.2); border: 1px solid var(--green-moss); color: #aee06d; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; padding: 4px 12px; border-radius: 100px; }
+/* Price table */
+.price-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+.price-table tr { border-bottom: 1px solid rgba(212,169,41,0.1); }
+.price-table tr:last-child { border-bottom: none; }
+.price-table th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); padding: 10px 14px; text-align: left; background: rgba(212,169,41,0.08); }
+.price-table td { padding: 12px 14px; font-size: 0.92rem; color: var(--earth-sand); }
+.price-table td:last-child { text-align: right; font-family: var(--font-mono); color: var(--gold-light); }
+.price-table tr.price-total td { font-weight: 700; color: var(--gold-light); background: rgba(212,169,41,0.08); font-family: var(--font-mono); font-size: 1rem; }
+.price-note { font-size: 0.75rem; color: var(--earth-stone); font-style: italic; margin-top: 12px; }
+/* Contact box */
+.sdash-contact-box { background: rgba(212,169,41,0.06); border: 1px solid rgba(212,169,41,0.25); border-radius: 12px; padding: 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+.sdash-contact-box h3 { font-family: var(--font-display); font-size: 1.2rem; color: var(--gold-light); margin-bottom: 8px; }
+.sdash-contact-box p { color: var(--earth-stone); font-size: 0.88rem; }
+.sdash-contact-links { display: flex; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 700px) {
+  .sdash-body { grid-template-columns: 1fr; }
+  .benefit-list { grid-template-columns: 1fr 1fr; }
+  .sdash-full { grid-column: 1; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="sdash">
+    <div class="sdash-header">
+        <div class="sdash-welcome">⛏ Sponsor Dashboard</div>
+        <h1 class="sdash-title">Welcome, {{ user.company or user.username }}!</h1>
+        <p class="sdash-sub">Thank you for supporting The Flintstones · FLL Unearthed National Champions</p>
+    </div>
+
+    <div class="sdash-body">
+
+        <!-- Registration Info -->
+        <div class="sdash-card">
+            <h3>Your Registration</h3>
+            <div class="sdash-row">
+                <span class="sdash-label">Status</span>
+                <span class="sdash-val"><span class="sdash-status">✅ Active Sponsor</span></span>
+            </div>
+            <div class="sdash-row">
+                <span class="sdash-label">Company</span>
+                <span class="sdash-val">{{ user.company or '—' }}</span>
+            </div>
+            <div class="sdash-row">
+                <span class="sdash-label">Contact Person</span>
+                <span class="sdash-val">{{ user.contact or '—' }}</span>
+            </div>
+            <div class="sdash-row">
+                <span class="sdash-label">Username</span>
+                <span class="sdash-val">{{ user.username }}</span>
+            </div>
+            <div class="sdash-row">
+                <span class="sdash-label">Registered</span>
+                <span class="sdash-val">{{ user.created_at[:10] if user.created_at else '—' }}</span>
+            </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="sdash-card">
+            <h3>Your Contact Details</h3>
+            <div class="sdash-row">
+                <span class="sdash-label">Email</span>
+                <span class="sdash-val">{{ user.email or '<span class="sdash-val-empty">Not provided</span>' | safe }}</span>
+            </div>
+            <div class="sdash-row">
+                <span class="sdash-label">Phone</span>
+                <span class="sdash-val">{{ user.phone if user.phone else '<span class="sdash-val-empty">Not provided</span>' | safe }}</span>
+            </div>
+            <div class="sdash-row">
+                <span class="sdash-label">Message</span>
+                <span class="sdash-val" style="font-style:italic;font-size:0.85rem;">{{ user.message if user.message else '<span class="sdash-val-empty">None</span>' | safe }}</span>
+            </div>
+        </div>
+
+        <!-- Houston Price Table -->
+        <div class="sdash-card sdash-full">
+            <h3>🌍 Houston World Festival — Per-Student Costs</h3>
+            <table class="price-table">
+                <thead>
+                    <tr>
+                        <th>Expense</th>
+                        <th style="text-align:right;">Amount (USD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>✈ Round-trip Flight</td><td>$905.19</td></tr>
+                    <tr><td>🏨 Hotel Accommodation</td><td>$1,334.41</td></tr>
+                    <tr><td>🍽 Meals</td><td>$350.00</td></tr>
+                    <tr><td>🚌 Local Transport</td><td>$200.00</td></tr>
+                    <tr class="price-total"><td>Total per student</td><td>$2,750.60</td></tr>
+                </tbody>
+            </table>
+            <p class="price-note">* Prices are estimates and may vary as the event approaches. You may sponsor one or more students, or cover specific cost categories. Contact us to discuss a tailored sponsorship package.</p>
+        </div>
+
+        <!-- Benefits -->
+        <div class="sdash-card sdash-full">
+            <h3>Your Sponsorship Benefits</h3>
+            <div class="benefit-list">
+                <div class="benefit-item">
+                    <div class="bi-icon">👕</div>
+                    <h4>Jersey Logo</h4>
+                    <p>Your logo on our jerseys at FIRST World Festival in Houston, USA</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="bi-icon">🌐</div>
+                    <h4>Website Feature</h4>
+                    <p>Your brand featured on our website with logo and sponsor recognition</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="bi-icon">📱</div>
+                    <h4>Social Media</h4>
+                    <p>Regular posts on @theflintstones_fll featuring your sponsorship</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="bi-icon">📢</div>
+                    <h4>Brand Content</h4>
+                    <p>Promotional content &amp; thank-you posts published throughout the season</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="bi-icon">🇹🇷</div>
+                    <h4>National Pride</h4>
+                    <p>Be part of Turkey's STEM representation at the world's biggest robotics event</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="bi-icon">📄</div>
+                    <h4>Sponsorship File</h4>
+                    <p><a href="{{ url_for('static', filename='images/sponsorship.pdf') }}" target="_blank" style="color:var(--gold);">Download full details →</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Team -->
+        <div class="sdash-contact-box sdash-full">
+            <div>
+                <h3>Get in Touch With Us</h3>
+                <p>Our team will reach out to you at your registered email. Feel free to contact us directly anytime.</p>
+                <p style="margin-top:8px; font-family:var(--font-mono); font-size:0.78rem;">
+                    📧 theflintstones23fll@gmail.com &nbsp;|&nbsp; 📞 0 534 256 24 57 &nbsp;|&nbsp; 📸 @theflintstones_fll
+                </p>
+            </div>
+            <div class="sdash-contact-links">
+                <a href="mailto:theflintstones23fll@gmail.com" class="btn-sponsor">📧 Email the Team</a>
+                <a href="{{ url_for('static', filename='images/sponsorship.pdf') }}" target="_blank" class="btn-sponsor-outline">📄 Sponsorship PDF</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
