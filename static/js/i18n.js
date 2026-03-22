@@ -158,7 +158,7 @@ const TRANSLATIONS = {
     "register.login":       "Login here",
     "register.btn.team":    "Create Team Account 🪨",
     "register.btn.sponsor": "Register as Sponsor 🤝",
-    "register.note":        "After registering, our team will contact you at your business email within 48 hours.",
+    "register.note":        "To sponsor, contact our coach directly: theflintstones23fll@gmail.com",
     "score.title":          "⛏ FLL Unearthed Score Calculator",
     "score.loggedas":       "Logged in as",
   },
@@ -317,7 +317,7 @@ const TRANSLATIONS = {
     "register.login":       "Giriş yapın",
     "register.btn.team":    "Takım Hesabı Oluştur 🪨",
     "register.btn.sponsor": "Sponsor Olarak Kayıt Ol 🤝",
-    "register.note":        "Kayıt sonrası ekibimiz iş e-postanıza 48 saat içinde ulaşacak.",
+    "register.note":        "Sponsor olmak için koçumuzla doğrudan iletişime geçin: theflintstones23fll@gmail.com",
     "score.title":          "⛏ FLL Unearthed Puan Hesaplayıcı",
     "score.loggedas":       "Giriş yapan",
   }

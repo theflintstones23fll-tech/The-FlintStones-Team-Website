@@ -138,7 +138,7 @@ def register():
                 users[username] = user_data
                 save_users(users)
                 if reg_type == 'sponsor':
-                    flash(f'Sponsor account created! Welcome, {company}. We will be in touch soon.', 'success')
+                    flash(f'Sponsor account created! Welcome, {company}. Please contact our coach at theflintstones23fll@gmail.com', 'success')
                 else:
                     flash('Account created! Please log in.', 'success')
                 return redirect(url_for('login'))
